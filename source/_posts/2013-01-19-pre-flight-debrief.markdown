@@ -37,7 +37,7 @@ at least for the moment :)
 Having clarified this basic concept, let's see what the sudden future reserves:
 I'm gonna talk a lot in the following months about my efforts to automate the
 infrastructure I'm actually managing. This effort started slightly more than a
-year ago when I discovered the excellent ["Continuos Delivery" book](http://continuousdelivery.com/) 
+year ago when I discovered the excellent ["Continuous Delivery" book](http://continuousdelivery.com/) 
 by [Jez Humble](https://twitter.com/jezhumble) and David Farley. 
 Meanwhile, I've done a lot to try to add some solid
 ground on the infrastructure while maintaining the existent. I now reached a
