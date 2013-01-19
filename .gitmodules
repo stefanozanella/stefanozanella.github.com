@@ -1,0 +1,3 @@
+[submodule ".themes/mullah-mussels"]
+	path = .themes/mullah-mussels
+	url = git://github.com/octopress-themes/mullah-mussels.git
