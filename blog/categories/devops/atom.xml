@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Stefano Zanella's Blog]]></title>
   <link href="http://blog.dontwakethecat.net/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://blog.dontwakethecat.net/"/>
-  <updated>2013-01-20T00:41:38+01:00</updated>
+  <updated>2013-01-20T00:42:48+01:00</updated>
   <id>http://blog.dontwakethecat.net/</id>
   <author>
     <name><![CDATA[Stefano Zanella]]></name>
@@ -49,7 +49,7 @@ at least for the moment :)</p>
 <p>Having clarified this basic concept, let's see what the sudden future reserves:
 I'm gonna talk a lot in the following months about my efforts to automate the
 infrastructure I'm actually managing. This effort started slightly more than a
-year ago when I discovered the excellent <a href="http://continuousdelivery.com/">"Continuos Delivery" book</a>
+year ago when I discovered the excellent <a href="http://continuousdelivery.com/">"Continuous Delivery" book</a>
 by <a href="https://twitter.com/jezhumble">Jez Humble</a> and David Farley.
 Meanwhile, I've done a lot to try to add some solid
 ground on the infrastructure while maintaining the existent. I now reached a
