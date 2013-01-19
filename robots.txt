@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://stefanozanella.github.com/sitemap.xml 
