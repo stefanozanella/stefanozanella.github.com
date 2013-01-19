@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://stefanozanella.github.com/sitemap.xml 
+Sitemap: http://blog.dontwakethecat.net/sitemap.xml 
