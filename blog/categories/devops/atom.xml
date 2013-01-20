@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Stefano Zanella's Blog]]></title>
   <link href="http://blog.dontwakethecat.net/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://blog.dontwakethecat.net/"/>
-  <updated>2013-01-20T00:42:48+01:00</updated>
+  <updated>2013-01-20T02:57:12+01:00</updated>
   <id>http://blog.dontwakethecat.net/</id>
   <author>
     <name><![CDATA[Stefano Zanella]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Master of Puppets]]></title>
+    <link href="http://blog.dontwakethecat.net/blog/2013/01/20/master-of-puppets/"/>
+    <updated>2013-01-20T01:16:00+01:00</updated>
+    <id>http://blog.dontwakethecat.net/blog/2013/01/20/master-of-puppets</id>
+    <content type="html"><![CDATA[<p>Let me start the real first post of this blog (apart from the introduction)
+with a citation. Despite the title, I won't talk about music. Instead, I'll
+show you a photo:</p>
+
+<!-- More -->
+
+
+<p><img src="http://farm9.staticflickr.com/8330/8395925627_7fd19c4aba_z.jpg"></p>
+
+<p>It's a shot I've taken in <strong>Bern</strong> on August 2011; it's the window of a toys
+shop you can find under the cloisters of Gerechtigkeitstraße. Its name? <em>Antics
+und Puppenklinik</em>, which even without translation projects us directly to the
+focus of this and probably subsequent writings.</p>
+
+<p>As promised in my <a href="http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief/">first post</a>
+I'll document the setup of a node that will act as the <strong>puppetmaster</strong> for my
+company's network. If you don't know what I'm talking about, you probably
+landed on the wrong page.<br/>
+If, however, you're a sysadmin or an operations guy
+and still don't know what I'm talking about, you should <strong>IMMEDIATELY</strong> go
+checking out <a href="http://docs.puppetlabs.com/">Puppet Documentation</a> on the
+<a href="http://puppetlabs.com/">Puppet Labs website</a>.</p>
+
+<p>Before starting, here's a brief overview. We'll start by installing a fresh
+<strong>CentOS 6.3</strong> on a <strong>KVM</strong> virtual machine, then we will step into installing
+<strong>Puppet</strong> and configuring it so it can start talking with other machines.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Pre-flight debrief]]></title>

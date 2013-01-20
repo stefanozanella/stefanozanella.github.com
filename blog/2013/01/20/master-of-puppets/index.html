@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Stefano Zanella's Blog</title>
+  <title>Master of Puppets - Stefano Zanella's Blog</title>
   <meta name="author" content="Stefano Zanella">
 
   
-  <meta name="description" content="Blog Archive 2013 Master of Puppets
-Jan 20 2013 posted in devops, howto, puppet Pre-flight debrief
-Jan 19 2013 posted in devops Recent Posts Master &hellip;">
+  <meta name="description" content="Let me start the real first post of this blog (apart from the introduction)
+with a citation. Despite the title, I won&#8217;t talk about music. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@ Jan 19 2013 posted in devops Recent Posts Master &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/archives/">
+  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/01/20/master-of-puppets/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -76,49 +75,109 @@ Jan 19 2013 posted in devops Recent Posts Master &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Master of Puppets</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T01:16:00+01:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>Let me start the real first post of this blog (apart from the introduction)
+with a citation. Despite the title, I won&#8217;t talk about music. Instead, I&#8217;ll
+show you a photo:</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/01/20/master-of-puppets/">Master of Puppets</a></h1>
-<time datetime="2013-01-20T01:16:00+01:00" pubdate><span class='month'>Jan</span> <span class='day'>20</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/howto/'>howto</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a></span>
-</footer>
+<!-- More -->
 
 
-</article>
+<p><img src="http://farm9.staticflickr.com/8330/8395925627_7fd19c4aba_z.jpg"></p>
 
+<p>It&#8217;s a shot I&#8217;ve taken in <strong>Bern</strong> on August 2011; it&#8217;s the window of a toys
+shop you can find under the cloisters of Gerechtigkeitstraße. Its name? <em>Antics
+und Puppenklinik</em>, which even without translation projects us directly to the
+focus of this and probably subsequent writings.</p>
 
+<p>As promised in my <a href="http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief/">first post</a>
+I&#8217;ll document the setup of a node that will act as the <strong>puppetmaster</strong> for my
+company&#8217;s network. If you don&#8217;t know what I&#8217;m talking about, you probably
+landed on the wrong page.<br/>
+If, however, you&#8217;re a sysadmin or an operations guy
+and still don&#8217;t know what I&#8217;m talking about, you should <strong>IMMEDIATELY</strong> go
+checking out <a href="http://docs.puppetlabs.com/">Puppet Documentation</a> on the
+<a href="http://puppetlabs.com/">Puppet Labs website</a>.</p>
 
-<article>
-  
-<h1><a href="/blog/2013/01/19/pre-flight-debrief/">Pre-flight debrief</a></h1>
-<time datetime="2013-01-19T20:20:00+01:00" pubdate><span class='month'>Jan</span> <span class='day'>19</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/devops/'>devops</a></span>
-</footer>
-
-
-</article>
-
+<p>Before starting, here&#8217;s a brief overview. We&#8217;ll start by installing a fresh
+<strong>CentOS 6.3</strong> on a <strong>KVM</strong> virtual machine, then we will step into installing
+<strong>Puppet</strong> and configuring it so it can start talking with other machines.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Zanella</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-20T01:16:00+01:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/howto/'>howto</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/01/20/master-of-puppets/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/01/20/master-of-puppets/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/19/pre-flight-debrief/" title="Previous Post: Pre-flight debrief">&laquo; Pre-flight debrief</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>
