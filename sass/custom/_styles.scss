@@ -12,7 +12,13 @@
     /* ----- main layout ----- */
 
 
-    html { background: #262C33 url("../images/mart.jpg"); }
+    html { 
+        background: #262C33 url("../images/mart.jpg") no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
     body { font-size: 1em; }
 
