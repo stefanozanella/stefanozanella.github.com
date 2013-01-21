@@ -209,12 +209,252 @@ yum install puppet-server
 ```
 This will also take care of installing Ruby. The latest version available in
 CentOS is still a 1.8.7 as time of writing, but it's perfectly suitable to run
-the Puppet's applications.
+Puppet's applications.
 
 ## Configuring the Master
-### Service Setup
-It's no harder than:
+We want to configure the puppetmaster both as the master as well as an agent
+for itself. Both configurations are done in `/etc/puppet/puppet.conf`.  
+We start by configuring the most basic options for both the master and the
+agent; then we'll move into configuring the right SSL support for our
+infrastructure.
+
+### Basic configuration options
+For what concerns the master, the only option we touch for the moment is the
+one that enables distribution of custom facts and types from the server to the
+agents (plugin sync):
+``` ini
+[main]
+...
+pluginsync = true
+...
+```
+This same option, since it is set in the `main` section, also apply for the
+agent.
+
+Also, for the agent, we set the appropriate name for the master via the
+`server` directive. By default the agent would look for an host named `puppet`;
+since our master will be reachable via its FQDN, we need to be explicit about
+this. This option belongs to the `agent` section:
+``` ini
+[agent]
+...
+server = puppet.derecom.it
+...
+```
+
+### SSL Setup
+The next step is the most important: setting up SSL. It must be noted that
+Puppet Master is able to handle a PKI itself, and provides a number of
+facilities for the user in this sense (read automatic certificate signing or
+command line certificate signing confirmation). I see however (at least) two
+caveats with this approach:
+
+* if you enable automatic certificate signing, even with (sub)domain control
+  (more info [here](http://docs.puppetlabs.com/guides/configuring.html) under
+  the `autosign.conf` section), you are relaxing your security constraints
+  since anyone that generates a request with a suitable domain (that can easily
+  be spotted) can obtain a valid certificate within the whole infrastructure. 
+  I'm not a security paranoid (should do I?), but that's worth noting
+* manually signing certificates via command line on the master is, in my
+  opinion, not very DevOps style. Or maybe it is, but the truth is that I'm too
+  lazy to consider doing that task manually. (Yes, it surely can be automated
+  in some way, but at the moment I feel too lazy also for thinking/searching
+  about this).
+
+These two considerations are surely arguable and could be easily ignored, 
+but there's another aspect to consider: in the infrastructure I'm managing, 
+I do an heavy use of SSL certifcates. 
+Basically, every host already has a certificate, which is signed
+by a central PKI I built (sorry, no time to talk here about this, but I promise
+I'll also write about how that works). These certificate are used for a range
+of tasks, from classic HTTPS on Web-exposed services, to bidirectional crypted
+communication between services (mainly LDAPS and PostgreSQL). 
+I generally sign a certificate per host and use it to identify the host for 
+each service it provides/consume on the infrastructure.  
+That said, I would like to rely on this already working PKI also for managing
+communication between puppet services.
+
+This task can be accomplished by first providing a certificate/private key pair
+to the puppetmaster, and then tweaking some configuration options in
+`puppet.conf`.  
+We start by generating and storing on the master the objects needed to setup an
+SSL-enciphered communication: the **SSL certificate**, its associated **private key** 
+and the **Certificate Authority chain** to be trusted as the origin of all
+certificates.
+We start by generating a **CSR** on the node that contains the PKI (which is basically a
+self-signed certificate that can sign other certificates). The subject of this
+object is the node on which the puppet master runs; since this node at the
+moment has three names (`puppet`, `puppetmaster` and `bernstein`) we can
+configure the CSR to also hold additional DNS names. This is done by providing
+a configuration file to the `openssl` CLI tool that contains an extension which
+specifies the alternative names for the subject.  
+To build this configuration file, we can copy the shipped `openssl.cnf` and
+tweak its configuration:
 ``` bash
-chkconfig puppetmaster on
+cp /etc/pki/tls/openssl.cnf /etc/pki/tls/bernstein.derecom.it.cnf
+vi /etc/pki/tls/bernstein.derecom.it.cnf
+```
+``` ini
+...
+[ req ]
+...
+req_extensions = v3_req # The extensions to add to a certificate request
+...
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = puppet.derecom.it
+DNS.2 = puppetmaster.derecom.it
+...
+```
+Note that it is **essential** for the correct operation of the master that the
+at least one of the DNS names reported correspond to the FQDN the agents use
+to connect to the server. Otherwise, they will complain that the server it's
+not who is expected to be.
+
+Now that the configuration is in place, we can generate the CSR and the private
+key with the following command (output is reported, also):
+``` bash
+openssl req -new -nodes -subj '/C=IT/ST=Veneto/L=Padova/O=Derecom srl/OU=IT/CN=bernstein.derecom.it' \
+-keyout /etc/pki/tls/private/bernstein.derecom.it.key \
+-out /etc/pki/tls/bernstein.derecom.it.csr \
+-config /etc/pki/tls/bernstein.derecom.it.cnf
+Generating a 2048 bit RSA private key
+...+++
+............................................................................................................................................................................................+++
+writing new private key to '/etc/pki/tls/private/bernstein.derecom.it.key'
+-----
+```
+
+At this point we have a signing request, which can be thought as a certificate
+that cannot be trusted by anyone yet, because nobody can assure the certificate
+is authentic. For this reason, it must be _signed_ by a trusted authority.  
+We do this step using our self-signed CA: basically a certificate that can
+"sign" other certificates and that is supposed to be trusted by the network.
+Again, I leave out here the details to setup such a self-signed authority; you
+need to take for granted that the following command works as expected (output
+appended):
+``` bash
+openssl ca -policy policy_anything -in /etc/pki/tls/bernstein.derecom.it.csr \
+-out /etc/pki/tls/bernstein.derecom.it.crt -config /etc/pki/Auth-CA/openssl.cnf
+Using configuration from /etc/pki/Auth-CA/openssl.cnf
+Enter pass phrase for /etc/pki/Auth-CA/private/Derecom-Auth-CA.key:
+Check that the request matches the signature
+Signature ok
+Certificate Details:
+        Serial Number:
+            d6:9b:51:24:6d:b2:23:ae
+        Validity
+            Not Before: Jan 21 16:19:49 2013 GMT
+            Not After : Jan 20 16:19:49 2018 GMT
+        Subject:
+            countryName               = IT
+            stateOrProvinceName       = Veneto
+            localityName              = Padova
+            organizationName          = Derecom srl
+            organizationalUnitName    = IT
+            commonName                = bernstein.derecom.it
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                E1:87:A2:E3:17:2A:A5:80:09:DC:2D:B0:60:CF:2F:A8:CC:96:C5:1E
+            X509v3 Authority Key Identifier: 
+                keyid:00:E7:0E:B6:D5:20:C6:00:9A:91:DF:69:3F:8A:21:4F:01:DD:60:5F
+
+            X509v3 Key Usage: 
+                Digital Signature, Non Repudiation, Key Encipherment
+            X509v3 Subject Alternative Name: 
+                DNS:puppet.derecom.it, DNS:puppetmaster.derecom.it
+Certificate is to be certified until Jan 20 16:19:49 2018 GMT (1825 days)
+Sign the certificate? [y/n]:y
+
+
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+```
+
+The output of this command is the signed certificate. We can take this file and
+the private key created before and copy to the puppetmaster node. Also, we copy
+a third object, which is the CA itself (actually the _chain of CA_, since I'm
+technically using an Intermidiate Certificate Authority in this case - you can learn
+more about the topic
+[here](http://en.wikipedia.org/wiki/Intermediate_certificate_authorities)).  
+The CA must be installed on every node that makes use of SSL with certificates
+that originated in our PKI because otherwise certificates themselves could not
+be verified:
+``` bash
+scp /etc/pki/tls/bernstein.derecom.it.crt puppet.derecom.it:/etc/pki/tls
+scp /etc/pki/tls/private/bernstein.derecom.it.key puppet.derecom.it:/etc/pki/tls/private
+scp /etc/pki/tls/certs/Derecom-Auth-CA-bundle.crt puppet.derecom.it:/etc/pki/tls
+```
+
+Now that the Puppet Master has everything he needs to have, we can actually
+update its configuration. Basically, we want to prevent the master to act as a
+Certificate Authority: he will only be able to verify its peers using the
+available trusted CA. Also, we want the agent to prevent generating a CSR if no
+certificate available: it will our responsibility to provide clients with a
+correct certificate.  
+The configuration is done again in `/etc/puppet/puppet.conf`. The options
+stored in the `main` section are valid also for the agent; instead, we disable
+the CA in a `master` section:
+``` ini
+[main]
+...
+    # Where SSL certificates are kept.
+    # The default value is '$confdir/ssl'.
+    ssldir = /etc/pki/tls
+    privatekeydir = $ssldir/private
+    publickeydir = $ssldir
+    certdir = $ssldir
+    requestdir = $ssldir
+    hostcert = $certdir/$certname.crt
+    hostpubkey = $certdir/$certname.pub
+    hostprivkey = $privatekeydir/$certname.key
+    hostcsr = $requestdir/$certname.csr
+    cadir = $ssldir
+    cacert = $cadir/Derecom-Auth-CA-bundle.crt
+    localcacert = $cadir/Derecom-Auth-CA-bundle.crt
+    ca_name = Derecom Auth CA
+
+[master]
+    ca = false
+...
+```
+
+With this configuration in place, we still need to do an additional step due to
+(what I consider as) a bug in Puppet; in fact, despite the configuration
+options that clearly set the template of the SSL certifcate, key and authority
+filenames to look for, Puppet still tries to look for files that end with the
+`.pem` suffix. Also, it'll look for a file called `cert.pem` as the CA.  
+A quick workaround is to setup a couple of symbolic links so to make puppet
+master happy:
+``` bash
+ln -s /etc/pki/tls/bernstein.derecom.it.crt /etc/pki/tls/bernstein.derecom.it.pem
+ln -s /etc/pki/tls/private/bernstein.derecom.it.key /etc/pki/tls/private/bernstein.derecom.it.pem
+ln -s /etc/pki/tls/Derecom-Auth-CA.bundle /etc/pki/tls/cert/pem
+```
+
+Hopefully this will be fixed one day; for the moment we put the workaround in
+place and forget about it.
+
+### Service Setup
+Now we're finally ready to start the master. With everything in place, it's no harder than:
+``` bash
 service puppetmaster start
 ```
+
+Similarly, for the agent:
+``` bash
+chkconfig puppet on
+service puppet start
+```
+
+Notice that we don't enable the provided service for the master. This is
+because we'll setup a proxy with Nginx and Passenger as the following task.
