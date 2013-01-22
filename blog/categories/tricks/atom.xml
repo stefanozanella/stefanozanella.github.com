@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tricks | Stefano Zanella's Blog]]></title>
   <link href="http://blog.dontwakethecat.net/blog/categories/tricks/atom.xml" rel="self"/>
   <link href="http://blog.dontwakethecat.net/"/>
-  <updated>2013-01-22T17:47:11+01:00</updated>
+  <updated>2013-01-22T17:50:12+01:00</updated>
   <id>http://blog.dontwakethecat.net/</id>
   <author>
     <name><![CDATA[Stefano Zanella]]></name>
@@ -125,7 +125,7 @@ the database name. So, I modified the configuration by directly appending the
 Obviously this is a bit hacky, and surely setting a JDBC is a more proper way
 to handle this thing, however if it works...</p>
 
-<p>PS: I left out from the discussion a fundamental step, which is passing the
+<p><strong>PS:</strong> I left out from the discussion a fundamental step, which is passing the
 certificate, private key and CA to Gerrit to correctly handle the SSL
 handshake. This involves passing two additional properties to Gerrit startup
 command; I've already written down about it in
