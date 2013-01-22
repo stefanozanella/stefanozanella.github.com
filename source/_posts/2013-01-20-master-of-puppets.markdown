@@ -4,6 +4,7 @@ title: "Master of Puppets"
 date: 2013-01-20 01:16
 comments: true
 categories: [devops, puppet, howto]
+published: false
 ---
 
 Let me start the real first post of this blog (apart from the introduction)
