@@ -1,24 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Stefano Zanella's Blog]]></title>
-  <link href="http://blog.dontwakethecat.net/atom.xml" rel="self"/>
-  <link href="http://blog.dontwakethecat.net/"/>
-  <updated>2013-01-22T17:47:11+01:00</updated>
-  <id>http://blog.dontwakethecat.net/</id>
-  <author>
-    <name><![CDATA[Stefano Zanella]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Speaking in tongues with SSL - Stefano Zanella's Blog</title>
+  <meta name="author" content="Stefano Zanella">
 
   
-  <entry>
-    <title type="html"><![CDATA[Speaking in tongues with SSL]]></title>
-    <link href="http://blog.dontwakethecat.net/blog/2013/01/22/speaking-in-tongues-with-ssl/"/>
-    <updated>2013-01-22T16:56:00+01:00</updated>
-    <id>http://blog.dontwakethecat.net/blog/2013/01/22/speaking-in-tongues-with-ssl</id>
-    <content type="html"><![CDATA[<p>This was a nice one; let me explain.</p>
+  <meta name="description" content="This was a nice one; let me explain. I&#8217;ve setup a PotgreSQL host to hold all the various databases for the various
+services deployed in the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/01/22/speaking-in-tongues-with-ssl/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Stefano Zanella's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37813537-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.dontwakethecat.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Speaking in Tongues With SSL</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-22T16:56:00+01:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This was a nice one; let me explain.</p>
 
 <p>I&#8217;ve setup a PotgreSQL host to hold all the various databases for the various
 services deployed in the infrastructure. Since I know I&#8217;m not a security
@@ -156,61 +240,170 @@ that SSL is a though beast, as also noticed by
 <a href="https://twitter.com/_masterzen_">Brice Figureau</a> in
 <a href="http://www.masterzen.fr/2010/11/14/puppet-ssl-explained/">this post about Puppet SSL PKI</a>, and making our
 infrastructures more secure overall.</p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[Pre-flight debrief]]></title>
-    <link href="http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief/"/>
-    <updated>2013-01-19T20:20:00+01:00</updated>
-    <id>http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief</id>
-    <content type="html"><![CDATA[<p>I&#8217;m writing this post as a sort of disclamer for the posts that will follow in
-the (hopefully near) future.</p>
 
-<p>I became a fan of documentation near three years ago. Since then, I mantained
-(and am still mantaining) a sort of private wiki where I try do document
-whatever I do. In some cases, this practice saved my ass: since for the moment
-I don&#8217;t work in a team, I&#8217;m forced to continuously move between tasks that span
-from the full Dev and Ops range. Sometimes quite some time can pass until I
-need to return to a previous task to fix/improve things. This can be daunting,
-since memory tends to be pretty unreliable in these cases; having a neat trace
-of what I did helped me to quickly restore the archived knowledge.<br/>
-Over time, documenting <strong>while</strong> doing has become almost a natural practice for
-me, at least for what concerns operations tasks.</p>
+<span class="byline author vcard">Posted by <span class="fn">Stefano Zanella</span></span>
 
-<p>As stated above, till now I kept this documentation almost private, just
-visible to interested friends that wanted to dig from time to time into what I
-did; now I feel this practice has to change.<br/>
-So, I decided to at least try to make my efforts public. I&#8217;m sure there won&#8217;t
-be crowds of developers or sysadmins waiting for my next post; I&#8217;m not doing it
-for this reason. I&#8217;ll just try to use the lever that is what in my opinion is
-the biggest benfit of open source culture: it forces you to be better at what
-you do.</p>
+      
 
-<p>So, this little detour over my recent history just to say one basic thing: I&#8217;m
-gonna store here almost everything. So, expect to find obvious things as well
-as not-so-obvious ones; actually, I suspect the former will overweight the latter
-at least for the moment :)</p>
 
-<p>Having clarified this basic concept, let&#8217;s see what the sudden future reserves:
-I&#8217;m gonna talk a lot in the following months about my efforts to automate the
-infrastructure I&#8217;m actually managing. This effort started slightly more than a
-year ago when I discovered the excellent <a href="http://continuousdelivery.com/">&#8220;Continuous Delivery&#8221; book</a>
-by <a href="https://twitter.com/jezhumble">Jez Humble</a> and David Farley.
-Meanwhile, I&#8217;ve done a lot to try to add some solid
-ground on the infrastructure while maintaining the existent. I now reached a
-point in which I can start to implement all those nice automation practices.<br/>
-I&#8217;ll try to convert documentation I&#8217;ve already written into something suitable
-for the public audience; but, since I don&#8217;t want to start yak shaving right
-from the beginning, I&#8217;ll try to stay pragmatic enough and start by writing
-currently on-air tasks. For this reason, I apologize in advance if some pieces
-will miss from what I&#8217;ll write.</p>
 
-<p>I force myself now to stop adding to this post; enough self-centered writing
-for my tastes. Better to start writing something more practical; I&#8217;ll start
-with something very very basic and in very very little DevOps style: installing
-a Puppet master node.</p>
-]]></content>
-  </entry>
+
+
+
+
+
   
-</feed>
+
+
+<time datetime="2013-01-22T16:56:00+01:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/ssl/'>ssl</a>, <a class='category' href='/blog/categories/tricks/'>tricks</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/01/22/speaking-in-tongues-with-ssl/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/01/22/speaking-in-tongues-with-ssl/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/19/pre-flight-debrief/" title="Previous Post: Pre-flight debrief">&laquo; Pre-flight debrief</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://blog.dontwakethecat.net" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://blog.dontwakethecat.net/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      <a href="mailto:" alt="E-Mail"><img src="/images/Envelope.png"></a>
+      <a href="http://blog.dontwakethecat.net/atom.xml" alt="subscribe feed"><img src="/images/rss_big.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/speaking-in-tongues-with-ssl/">Speaking in tongues with SSL</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/19/pre-flight-debrief/">Pre-flight debrief</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stefanozanella">@stefanozanella</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stefanozanella',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("stefano_zanella", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/stefano_zanella" class="twitter-follow-button" data-show-count="false">Follow @stefano_zanella</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Stefano Zanella -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
