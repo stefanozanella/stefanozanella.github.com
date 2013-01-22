@@ -409,3 +409,9 @@ Notice: Finished catalog run in 0.04 seconds
 Obviously, the master doesn't need to sign the certificate, since the agent is
 picking the same certificate the master created on the first run. For the other
 agents, we'll need to manually sign certificates when new CSRs arrive.
+
+## To be continued...
+I wrap this post here, since it's already too long, but I'll continue in the
+next one with an important task: putting Puppet's configuration under version
+control and activating a (continuous) deployment pipeline in Jenkins for it.  
+I promise that will be more intersting than this post ;-)
