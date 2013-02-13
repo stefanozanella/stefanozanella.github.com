@@ -9,8 +9,8 @@
   <meta name="author" content="Stefano Zanella">
 
   
-  <meta name="description" content="This was a nice one; let me explain. I&#8217;ve setup a PotgreSQL host to hold all the various databases for the various
-services deployed in the &hellip;">
+  <meta name="description" content="Introduction I&#8217;ll create here a skeleton that can be useful for developing Puppet modules that
+adhere to some of the basic good development &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,602 @@ services deployed in the &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/12/puppet-module-skeleton/">Puppet Module Skeleton, CI Friendly</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-12T20:24:00+01:00" pubdate data-updated="true">Feb 12<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Introduction</h2>
+
+<p>I&#8217;ll create here a skeleton that can be useful for developing Puppet modules that
+adhere to some of the basic good development practices, such as testing and
+continuous integration.
+Why don&#8217;t I just use <code>puppet module generate</code>, you say? Because I want to have a more
+complete testing framework in place, and also have some additional
+facilities for reporting on tests. Though, using Puppet&#8217;s <strong>module</strong> face isn&#8217;t
+incompatible with what depicted here; you can just run it before performing the
+steps that follow, ignoring the creation of module&#8217;s directories.</p>
+
+<h2>Basic structure</h2>
+
+<p>We start by creating the directory where the module will live:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir &lt;modulename&gt;
+</span><span class='line'><span class="nb">cd</span> &lt;modulename&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After that, we need to setup the basic layout of a standard Puppet module:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir manifests files lib templates
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then, we create the main manifest of the module (this will come in
+handy shortly):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>vi manifests/init.pp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The content will be pretty basic for the moment. It will contain the same
+documentation sketch that <code>puppet module</code> generates, and obviously the class
+that gives name to the module itself:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='puppet'><span class='line'><span class="c-Singleline"># == Class: &lt;modulename&gt;</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># Full description of class &lt;modulename&gt; here.</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># === Parameters</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># Document parameters here.</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># [*sample_parameter*]</span>
+</span><span class='line'><span class="c-Singleline">#   Explanation of what this parameter affects and what it defaults to.</span>
+</span><span class='line'><span class="c-Singleline">#   e.g. &quot;Specify one or more upstream ntp servers as an array.&quot;</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># === Variables</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># Here you should define a list of variables that this module would require.</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># [*sample_variable*]</span>
+</span><span class='line'><span class="c-Singleline">#   Explanation of how this variable affects the funtion of this class and if it</span>
+</span><span class='line'><span class="c-Singleline">#   has a default. e.g. &quot;The parameter enc_ntp_servers must be set by the</span>
+</span><span class='line'><span class="c-Singleline">#   External Node Classifier as a comma separated list of hostnames.&quot; (Note,</span>
+</span><span class='line'><span class="c-Singleline">#   global variables should not be used in preference to class parameters  as of</span>
+</span><span class='line'><span class="c-Singleline">#   Puppet 2.6.)</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># === Examples</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># === Authors</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># Author Name &lt;author@domain.com&gt;</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># === Copyright</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="c-Singleline"># Copyright 2013 Your name here, unless otherwise noted.</span>
+</span><span class='line'><span class="c-Singleline">#</span>
+</span><span class='line'><span class="kd">class</span> <span class="err">&lt;</span><span class="nc">modulename</span><span class="err">&gt;</span> <span class="p">{</span>
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Ruby and Gemfile</h2>
+
+<p>We rely on functionality provided by a bunch of external gems. In this cases
+(i.e. always), I manage Ruby projects with
+<a href="https://github.com/sstephenson/rbenv/">rbenv</a> and
+<a href="http://gembundler.com/">Bundler</a>, so every folder is perfectly isolated from
+the others.</p>
+
+<p>I won&#8217;t go into installing <strong>rbenv</strong> and the <strong>ruby-build</strong> plugin. You can
+read the excellent documentation on project&#8217;s homepage. Instead, let&#8217;s declare
+which version of Ruby we want to use:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rbenv <span class="nb">local </span>1.9.3-p374
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then, assuming gem <code>bundler</code> is already installed, let&#8217;s setup project
+dependencies in the <code>Gemfile</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="ss">:rubygems</span>
+</span><span class='line'><span class="n">puppetversion</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">.</span><span class="n">key?</span><span class="p">(</span><span class="s1">&#39;PUPPET_VERSION&#39;</span><span class="p">)</span> <span class="p">?</span> <span class="s2">&quot;= </span><span class="si">#{</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;PUPPET_VERSION&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="p">:</span> <span class="s2">&quot;&gt;= 3.0&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;rake&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;puppet&#39;</span><span class="p">,</span> <span class="n">puppetversion</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rspec&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rspec-puppet&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rspec-hiera-puppet&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;puppet-lint&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;ci_reporter&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;puppetlabs_spec_helper&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is what&#8217;s in there:</p>
+
+<ul>
+<li>on <strong>line 2</strong>, we set a variable to require the correct puppet version, depending
+on which one we want to develop upon. This variable is tweakable from the
+external environment; this is useful e.g. if we want to perform a matrix
+build of the module, checking if code works for different versions of Puppet</li>
+<li><code>rspec-puppet</code> provides a set of helpers for writing tests against Puppet
+code</li>
+<li><code>rspec-hiera-puppet</code> allows us to use/test Hiera in our tests</li>
+<li><code>puppet-lint</code> provides a Rake task to check if Puppet code adhere to
+Puppetlabs guidelines</li>
+<li><code>ci_reporter</code> provides an helper to generate reports that can be read from
+Jenkins</li>
+<li><code>puppetlabs_spec_helper</code> provides a set of helpers to handle initialization
+of Puppet environment when testing.</li>
+</ul>
+
+
+<p>At this point we can proceed to installing the module&#8217;s dependencies with:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bundle install --path vendor/bundle
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Rspec initialization</h2>
+
+<p>The next step is to setup the directory that will hold our test code. Luckily,
+the excellent <strong>rspec-puppet</strong> tool can help us a lot:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bundle <span class="nb">exec </span>rspec-puppet-init
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In particular, the command above will take care of symlinking the folders in
+the module&#8217;s root into <code>spec/fixtures/modules/&lt;modulename&gt;</code>, looking at the
+main module&#8217;s manifest to find the correct name to use. It will also setup
+a basic <code>spec_helper</code> and <code>Rakefile</code>; the latter is the first step into CI
+integration.</p>
+
+<p>At this point we need to tweak the configuration in a couple of points.<br/>
+First thing first, as I explain in <a href="https://gist.github.com/stefanozanella/4190920">this Gist</a>,
+if you want to test a Puppet declaration that uses a function coming from an
+external module (as those in <strong>stdlib</strong>), you need to have the functions into
+the <code>LOAD_PATH</code> before running the tests. So, put the following line on top of
+your <code>spec_helper.rb</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vg">$:</span><span class="o">.</span><span class="n">unshift</span> <span class="o">*</span><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;../fixtures/modules/*/lib&#39;</span><span class="p">,</span> <span class="bp">__FILE__</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Also, we want to use
+<a href="https://github.com/puppetlabs/puppetlabs_spec_helper">Puppetlabs&#8217; <em>spec_helper</em></a>
+so we can avoid setting up Puppet state for testing. Following the instruction
+on the project&#8217;s home page, we again update <code>spec_helper</code> as follows:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;puppetlabs_spec_helper/module_spec_helper&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Rakefile</h2>
+
+<p>Next, we put our attention to the <code>Rakefile</code>. We want to:</p>
+
+<ul>
+<li>include the set of tasks provided by <code>puppetlabs_spec_helper</code></li>
+<li>configure the <code>ci_reporter</code> gem to report our test results to Jenkins</li>
+<li>add a task to perform syntax-checking on the module&#8217;s code</li>
+</ul>
+
+
+<p>The first step is the simplest; it&#8217;s as simple as adding the following line to
+the <code>Rakefile</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;puppetlabs_spec_helper/rake_tasks&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will make several tasks available to rake. One of these is <code>lint</code>, which
+we want to use to check if our code is best-practices compliant; unfortunately,
+the standard way it works is to check every <code>*.pp</code> file into the codebase. This
+means it will also check manifests e.g. from the Puppet codebase we have into
+<code>vendor</code>. You can easily understand that this way everything is going berserk.<br/>
+To solve this problem we can tweak the configuration of <code>puppet-lint</code>, changing
+the paths it will look into:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Configured to be recognizable by Jenkins warnings plugin</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;puppet-lint/tasks/puppet-lint&#39;</span>
+</span><span class='line'><span class="no">PuppetLint</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">ignore_paths</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;vendor/**/*.pp&quot;</span><span class="p">,</span> <span class="s2">&quot;spec/**/*.pp&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="no">PuppetLint</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">log_format</span> <span class="o">=</span>
+</span><span class='line'>  <span class="s2">&quot;%{path}:%{linenumber}:%{check}:%{KIND}:%{message}&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Contextually, we also set the format of the output so Jenkins can recognize
+what the lint tool is reporting and show it in its awesome UI.</p>
+
+<p>Next, we want to report on Jenkins how many tests there are in our codebase and
+how many of them are broken. Jenkins can store the history of this metric and
+show it in a nice graph on the build job dashboard. This task is performed by
+the <code>ci_reporter</code> gem, which can be configured as follows:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Used by Jenkins to show tests report.</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;ci/reporter/rake/rspec&#39;</span>
+</span><span class='line'><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;CI_REPORTS&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;reports&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Last, before checking if Puppet code adhere to the guidelines, we want to check if
+it is actually syntactically correct. To do this, Puppet&#8217;s CLI tool provides a
+<strong>parser</strong> face that does just that. Since I prefer, where possibile, to do things
+in code instead of invoking bash commands in Rakefiles (which in turn call code :),
+the Puppet face module must be loaded, and then the parser face can be called
+asking for code validation. The rake task to perform this check can be written
+as follows:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Invoked by Jenkins to validate manifest syntax</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;puppet/face&#39;</span>
+</span><span class='line'><span class="n">desc</span> <span class="s2">&quot;Perform puppet parser&#39;s validation on manifests&quot;</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">:validate</span> <span class="k">do</span>
+</span><span class='line'>  <span class="ss">Puppet</span><span class="p">:</span><span class="ss">:Face</span><span class="o">[</span><span class="ss">:parser</span><span class="p">,</span> <span class="s1">&#39;0.0.1&#39;</span><span class="o">].</span><span class="n">validate</span><span class="p">(</span><span class="no">FileList</span><span class="o">[</span><span class="s1">&#39;**/*.pp&#39;</span><span class="o">].</span><span class="n">exclude</span><span class="p">(</span><span class="s1">&#39;vendor/**/*.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;spec/**/*.pp&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">())</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To finish with the Rakefile, we remove the code installed by default by
+<code>rspec-puppet</code>, which is obsolete given we included Puppetlabs&#8217; helper. And,
+since I&#8217;m fucking lazy, let&#8217;s add a default task that performs validation,
+linting and testing in a single command.<br/>
+The final <code>Rakefile</code> looks like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rake&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;puppetlabs_spec_helper/rake_tasks&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Configured to be recognizable by Jenkins warnings plugin</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;puppet-lint/tasks/puppet-lint&#39;</span>
+</span><span class='line'><span class="no">PuppetLint</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">ignore_paths</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;vendor/**/*.pp&quot;</span><span class="p">,</span> <span class="s2">&quot;spec/**/*.pp&quot;</span><span class="o">]</span>
+</span><span class='line'><span class="no">PuppetLint</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">log_format</span> <span class="o">=</span>
+</span><span class='line'>  <span class="s2">&quot;%{path}:%{linenumber}:%{check}:%{KIND}:%{message}&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Used by Jenkins to show tests report.</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;ci/reporter/rake/rspec&#39;</span>
+</span><span class='line'><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;CI_REPORTS&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;reports&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Invoked by Jenkins to validate manifest syntax</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;puppet/face&#39;</span>
+</span><span class='line'><span class="n">desc</span> <span class="s2">&quot;Perform puppet parser&#39;s validation on manifests&quot;</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">:validate</span> <span class="k">do</span>
+</span><span class='line'>  <span class="ss">Puppet</span><span class="p">:</span><span class="ss">:Face</span><span class="o">[</span><span class="ss">:parser</span><span class="p">,</span> <span class="s1">&#39;0.0.1&#39;</span><span class="o">].</span><span class="n">validate</span><span class="p">(</span><span class="no">FileList</span><span class="o">[</span><span class="s1">&#39;**/*.pp&#39;</span><span class="o">].</span><span class="n">exclude</span><span class="p">(</span><span class="s1">&#39;vendor/**/*.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;spec/**/*.pp&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">())</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">desc</span> <span class="s2">&quot;Run puppet-lint and rspec puppet in sequence&quot;</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:lint</span><span class="p">,</span> <span class="ss">:validate</span><span class="p">,</span> <span class="ss">:spec</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Fixtures</h2>
+
+<p>As stated in
+<a href="https://puppetlabs.com/blog/the-next-generation-of-puppet-module-testing/">this post</a>
+from PuppetLabs, we need to setup a file that declares the fixtures we want to
+have in place when testing our codebase. Let&#8217;s pretend the module has a
+dependency on PuppetLabs&#8217; <code>stdlib</code> (which is what happens in most cases, if,
+for example, you&#8217;re using validation - and you <strong>DO</strong> validate your
+parameters, right?); we need to setup a <code>.fixtures.yml</code> file that looks like
+this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">fixtures</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">repositories</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">stdlib</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">git://github.com/puppetlabs/puppetlabs-stdlib.git</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">symlink</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">&lt;modulename&gt;</span><span class="p-Indicator">:</span> <span class="s">&quot;#{source_dir}&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Remember that this file needs to be updated whenever module&#8217;s dependencies
+change.</p>
+
+<h2>Modulefile</h2>
+
+<p>In the hope that someday Puppetlabs finally releases an API/client library to
+publish modules to the Forge (which I think should be very soon from now),
+let&#8217;s create a <code>Modulefile</code> that describes the module and its dependencies.
+This will also be useful to instruct <code>librarian-puppet</code> about the modules it
+effectively needs to install.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">name    &#39;&lt;author&gt;-&lt;modulename&gt;&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">version &#39;0.0.1&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">source &#39;UNKNOWN&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">author &#39;&lt;author&gt;&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">license &#39;Apache License, Version 2.0&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">summary &#39;...&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">description &#39;.......&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">project_page &#39;UNKNOWN&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">## Add dependencies, if any</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="l-Scalar-Plain">dependency &#39;puppetlabs/stdlib&#39;, &#39;&gt;= 3.2.0&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>README</h2>
+
+<p>It&#8217;s also good practice to add a <code>README</code>, as explained in
+<a href="https://puppetlabs.com/blog/writing-great-modules-an-introduction/">this must-read</a>
+from Puppetlabs itself. I won&#8217;t go into details here, since apart from a common
+layout, information in this file vary greatly depending on the project.<br/>
+The only thing I feel to say is quoting the suggestion in that same article
+of reading the readme of Carl Caum&#8217;s
+<a href="http://github.com/puppetlabs/puppetlabs-bacula">Bacula module</a>; that explains
+pretty everything.</p>
+
+<h2>Smoke tests</h2>
+
+<p>If you feel really cool, you can also add a smoke test into the <code>tests</code> folder,
+which is basically a working manifest that can be called directly with <code>puppet
+apply --noop</code>. If you&#8217;re using the <code>module</code> face of the <code>puppet</code> command, it
+will automatically create a <code>init.pp</code> that includes the main module&#8217;s class.
+Just, pay attention to the fact that you would need to keep this manifests
+up-to-date with your code (e.g. setting proper parameters and instantiating
+other resources that participate in the definition of a real, working
+use-case).</p>
+
+<h2>What happened to Git?</h2>
+
+<p>Till now, I completely left out versioning this skeleton project. This is
+because I didn&#8217;t find yet my preferred way to properly handle versioning and easily
+enable to bootstrap new modules based on this skeleton. I don&#8217;t exclude this
+way could be putting everything in a gem or rake task or bash script that can bootstrap a
+directory where a module is to be developed. Will see what the immediate future
+will suggest. For now, please allow me not to give an answer on this subject.</p>
+
+<h2>Additional resources</h2>
+
+<p>You can find additional information about testing Puppet code in
+<a href="https://puppetlabs.com/blog/the-next-generation-of-puppet-module-testing/">these</a>
+<a href="https://puppetlabs.com/blog/test-driven-development-with-puppet/">articles</a>
+from
+<a href="https://puppetlabs.com/blog/verifying-puppet-checking-syntax-and-writing-automated-tests/">Puppet Labs</a>.
+Note that few things, like, Cucumber for Puppet, are considered deprecated;
+nevertheless, they&#8217;re worth reading if you care about quality.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/07/my-brief-journey-on-release-management/">My (Brief) Journey on Release Management</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-07T20:10:00+01:00" pubdate data-updated="true">Feb 7<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Choice of the format: gem or deb?
+Deb because:
+- I&#8217;m managing an application, not a library (cite Yehuda Katz post about this
+  subject)
+- I want to make the application self contained so to avoid dependency
+  conflicts as much as possible (e.g. with puppet)
+- I still can&#8217;t figure out how to do the latter with gems</p>
+
+<p>Choice of the filesystem layout -> Where to put files?
+Quote Filesystem Hierarchy Standard:</p>
+
+<blockquote><p>/opt is reserved for the installation of add-on application software packages.</p>
+
+<p>A package to be installed in /opt must locate its static files in a separate
+/opt/<package> or /opt/<provider> directory tree</p>
+
+<p>Programs to be invoked by users must be located in the directory
+/opt/<package>/bin</p>
+
+<p>Host-specific configuration files must be installed in /etc/opt</p>
+
+<p>/usr is the second major section of the filesystem. /usr is shareable,
+read-only data. That means that /usr should be shareable between various
+FHS-compliant hosts and must not be written to. Any information that is
+host-specific or varies with time is stored elsewhere.</p>
+
+<p>Large software packages must not use a direct subdirectory under the /usr
+hierarchy.</p>
+
+<p>/usr/lib includes object files, libraries, and internal binaries that are not
+intended to be executed directly by users or shell scripts. [22]</p>
+
+<p>Applications may use a single subdirectory under /usr/lib. If an application
+uses a subdirectory, all architecture-dependent data exclusively used by the
+application must be placed within that subdirectory.</p>
+
+<p>/usr/bin : Most user commands
+Purpose</p>
+
+<p>This is the primary directory of executable commands on the system.
+Choice of /usr/lib + symlinks: depict idea, chosen because I feel better about
+it, and also seen more often in real packages (like OpenJDK). /opt seems to be
+used &#8220;manually&#8221; when installing pre-backed applications (like custom JVM
+versions or Java application server that just need to get extracted into a
+folder).</p></blockquote>
+
+<p>Classic packaging steps (as per common packaging guides):
+- download source package tarball
+- extract
+- ./configure
+- makea -> compile, almost not necessary in ruby
+- make install -> puts file in right place on filesystem, can be fooled to
+  install to a custom dir usually specifying (at least) a &#8211;prefix option in configure</p>
+
+<p>Identified steps for building/releasing the package:
+- generate source package -> depict structure, make rake task (cite puppetlabs source)
+ - tar format, just contains the full source tree (something like a clone of a
+   source repository)</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -226,6 +822,14 @@ a Puppet master node.</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/12/puppet-module-skeleton/">Puppet Module Skeleton, CI Friendly</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/07/my-brief-journey-on-release-management/">My (brief) journey on release management</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/01/22/speaking-in-tongues-with-ssl/">Speaking in tongues with SSL</a>

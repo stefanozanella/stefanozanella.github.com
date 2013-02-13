@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: puppet, | Stefano Zanella's Blog]]></title>
+  <link href="http://blog.dontwakethecat.net/blog/categories/puppet-/atom.xml" rel="self"/>
+  <link href="http://blog.dontwakethecat.net/"/>
+  <updated>2013-02-13T23:21:08+01:00</updated>
+  <id>http://blog.dontwakethecat.net/</id>
+  <author>
+    <name><![CDATA[Stefano Zanella]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Puppet Module Skeleton, CI Friendly]]></title>
+    <link href="http://blog.dontwakethecat.net/blog/2013/02/12/puppet-module-skeleton/"/>
+    <updated>2013-02-12T20:24:00+01:00</updated>
+    <id>http://blog.dontwakethecat.net/blog/2013/02/12/puppet-module-skeleton</id>
+    <content type="html"><![CDATA[<h2>Introduction</h2>
+
+<p>I'll create here a skeleton that can be useful for developing Puppet modules that
+adhere to some of the basic good development practices, such as testing and
+continuous integration.
+Why don't I just use <code>puppet module generate</code>, you say? Because I want to have a more
+complete testing framework in place, and also have some additional
+facilities for reporting on tests. Though, using Puppet's <strong>module</strong> face isn't
+incompatible with what depicted here; you can just run it before performing the
+steps that follow, ignoring the creation of module's directories.</p>
+
+<h2>Basic structure</h2>
+
+<p>We start by creating the directory where the module will live:</p>
+
+<p><code>bash
+mkdir &lt;modulename&gt;
+cd &lt;modulename&gt;
+</code></p>
+
+<p>After that, we need to setup the basic layout of a standard Puppet module:</p>
+
+<p><code>bash
+mkdir manifests files lib templates
+</code></p>
+
+<p>Then, we create the main manifest of the module (this will come in
+handy shortly):</p>
+
+<p><code>bash
+vi manifests/init.pp
+</code></p>
+
+<p>The content will be pretty basic for the moment. It will contain the same
+documentation sketch that <code>puppet module</code> generates, and obviously the class
+that gives name to the module itself:</p>
+
+<p>```puppet</p>
+
+<h1>== Class: <modulename></h1>
+
+<p>#</p>
+
+<h1>Full description of class <modulename> here.</h1>
+
+<p>#</p>
+
+<h1>=== Parameters</h1>
+
+<p>#</p>
+
+<h1>Document parameters here.</h1>
+
+<p>#</p>
+
+<h1>[<em>sample_parameter</em>]</h1>
+
+<h1>Explanation of what this parameter affects and what it defaults to.</h1>
+
+<h1>e.g. "Specify one or more upstream ntp servers as an array."</h1>
+
+<p>#</p>
+
+<h1>=== Variables</h1>
+
+<p>#</p>
+
+<h1>Here you should define a list of variables that this module would require.</h1>
+
+<p>#</p>
+
+<h1>[<em>sample_variable</em>]</h1>
+
+<h1>Explanation of how this variable affects the funtion of this class and if it</h1>
+
+<h1>has a default. e.g. "The parameter enc_ntp_servers must be set by the</h1>
+
+<h1>External Node Classifier as a comma separated list of hostnames." (Note,</h1>
+
+<h1>global variables should not be used in preference to class parameters  as of</h1>
+
+<h1>Puppet 2.6.)</h1>
+
+<p>#</p>
+
+<h1>=== Examples</h1>
+
+<p>#</p>
+
+<h1>=== Authors</h1>
+
+<p>#</p>
+
+<h1>Author Name <a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#58;&#97;&#117;&#x74;&#104;&#x6f;&#114;&#x40;&#100;&#x6f;&#x6d;&#97;&#x69;&#110;&#46;&#x63;&#111;&#109;">&#x61;&#x75;&#116;&#104;&#111;&#x72;&#64;&#100;&#x6f;&#109;&#x61;&#x69;&#x6e;&#x2e;&#x63;&#111;&#109;</a></h1>
+
+<p>#</p>
+
+<h1>=== Copyright</h1>
+
+<p>#</p>
+
+<h1>Copyright 2013 Your name here, unless otherwise noted.</h1>
+
+<p>#
+class <modulename> {
+}
+```</p>
+
+<h2>Ruby and Gemfile</h2>
+
+<p>We rely on functionality provided by a bunch of external gems. In this cases
+(i.e. always), I manage Ruby projects with
+<a href="https://github.com/sstephenson/rbenv/">rbenv</a> and
+<a href="http://gembundler.com/">Bundler</a>, so every folder is perfectly isolated from
+the others.</p>
+
+<p>I won't go into installing <strong>rbenv</strong> and the <strong>ruby-build</strong> plugin. You can
+read the excellent documentation on project's homepage. Instead, let's declare
+which version of Ruby we want to use:
+<code>bash
+rbenv local 1.9.3-p374
+</code></p>
+
+<p>Then, assuming gem <code>bundler</code> is already installed, let's setup project
+dependencies in the <code>Gemfile</code>:
+```ruby
+source :rubygems
+puppetversion = ENV.key?('PUPPET_VERSION') ? "= #{ENV['PUPPET_VERSION']}" : ">= 3.0"</p>
+
+<p>gem 'rake'</p>
+
+<p>group :development do
+  gem 'puppet', puppetversion
+end</p>
+
+<p>group :test do
+  gem 'rspec'
+  gem 'rspec-puppet'
+  gem 'rspec-hiera-puppet'
+  gem 'puppet-lint'
+  gem 'ci_reporter'
+  gem 'puppetlabs_spec_helper'
+end
+```
+This is what's in there:</p>
+
+<ul>
+<li>on <strong>line 2</strong>, we set a variable to require the correct puppet version, depending
+on which one we want to develop upon. This variable is tweakable from the
+external environment; this is useful e.g. if we want to perform a matrix
+build of the module, checking if code works for different versions of Puppet</li>
+<li><code>rspec-puppet</code> provides a set of helpers for writing tests against Puppet
+code</li>
+<li><code>rspec-hiera-puppet</code> allows us to use/test Hiera in our tests</li>
+<li><code>puppet-lint</code> provides a Rake task to check if Puppet code adhere to
+Puppetlabs guidelines</li>
+<li><code>ci_reporter</code> provides an helper to generate reports that can be read from
+Jenkins</li>
+<li><code>puppetlabs_spec_helper</code> provides a set of helpers to handle initialization
+of Puppet environment when testing.</li>
+</ul>
+
+
+<p>At this point we can proceed to installing the module's dependencies with:</p>
+
+<p><code>bash
+bundle install --path vendor/bundle
+</code></p>
+
+<h2>Rspec initialization</h2>
+
+<p>The next step is to setup the directory that will hold our test code. Luckily,
+the excellent <strong>rspec-puppet</strong> tool can help us a lot:</p>
+
+<p><code>bash
+bundle exec rspec-puppet-init
+</code></p>
+
+<p>In particular, the command above will take care of symlinking the folders in
+the module's root into <code>spec/fixtures/modules/&lt;modulename&gt;</code>, looking at the
+main module's manifest to find the correct name to use. It will also setup
+a basic <code>spec_helper</code> and <code>Rakefile</code>; the latter is the first step into CI
+integration.</p>
+
+<p>At this point we need to tweak the configuration in a couple of points.<br/>
+First thing first, as I explain in <a href="https://gist.github.com/stefanozanella/4190920">this Gist</a>,
+if you want to test a Puppet declaration that uses a function coming from an
+external module (as those in <strong>stdlib</strong>), you need to have the functions into
+the <code>LOAD_PATH</code> before running the tests. So, put the following line on top of
+your <code>spec_helper.rb</code>:</p>
+
+<p><code>ruby
+$:.unshift *Dir.glob(File.expand_path('../fixtures/modules/*/lib', __FILE__))
+</code></p>
+
+<p>Also, we want to use
+<a href="https://github.com/puppetlabs/puppetlabs_spec_helper">Puppetlabs' <em>spec_helper</em></a>
+so we can avoid setting up Puppet state for testing. Following the instruction
+on the project's home page, we again update <code>spec_helper</code> as follows:
+<code>ruby
+require 'puppetlabs_spec_helper/module_spec_helper'
+</code></p>
+
+<h2>Rakefile</h2>
+
+<p>Next, we put our attention to the <code>Rakefile</code>. We want to:</p>
+
+<ul>
+<li>include the set of tasks provided by <code>puppetlabs_spec_helper</code></li>
+<li>configure the <code>ci_reporter</code> gem to report our test results to Jenkins</li>
+<li>add a task to perform syntax-checking on the module's code</li>
+</ul>
+
+
+<p>The first step is the simplest; it's as simple as adding the following line to
+the <code>Rakefile</code>:
+<code>ruby
+require 'puppetlabs_spec_helper/rake_tasks'
+</code></p>
+
+<p>This will make several tasks available to rake. One of these is <code>lint</code>, which
+we want to use to check if our code is best-practices compliant; unfortunately,
+the standard way it works is to check every <code>*.pp</code> file into the codebase. This
+means it will also check manifests e.g. from the Puppet codebase we have into
+<code>vendor</code>. You can easily understand that this way everything is going berserk.<br/>
+To solve this problem we can tweak the configuration of <code>puppet-lint</code>, changing
+the paths it will look into:
+```ruby</p>
+
+<h1>Configured to be recognizable by Jenkins warnings plugin</h1>
+
+<p>require 'puppet-lint/tasks/puppet-lint'
+PuppetLint.configuration.ignore_paths = ["vendor/<strong>/*.pp", "spec/</strong>/*.pp"]
+PuppetLint.configuration.log_format =
+  "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
+```
+Contextually, we also set the format of the output so Jenkins can recognize
+what the lint tool is reporting and show it in its awesome UI.</p>
+
+<p>Next, we want to report on Jenkins how many tests there are in our codebase and
+how many of them are broken. Jenkins can store the history of this metric and
+show it in a nice graph on the build job dashboard. This task is performed by
+the <code>ci_reporter</code> gem, which can be configured as follows:
+```ruby</p>
+
+<h1>Used by Jenkins to show tests report.</h1>
+
+<p>require 'ci/reporter/rake/rspec'
+ENV['CI_REPORTS'] = 'reports'
+<code>
+Last, before checking if Puppet code adhere to the guidelines, we want to check if
+it is actually syntactically correct. To do this, Puppet's CLI tool provides a
+**parser** face that does just that. Since I prefer, where possibile, to do things
+in code instead of invoking bash commands in Rakefiles (which in turn call code :),
+the Puppet face module must be loaded, and then the parser face can be called
+asking for code validation. The rake task to perform this check can be written
+as follows:
+</code>ruby</p>
+
+<h1>Invoked by Jenkins to validate manifest syntax</h1>
+
+<p>require 'puppet/face'
+desc "Perform puppet parser's validation on manifests"
+task :validate do
+  Puppet::Face[:parser, '0.0.1'].validate(FileList['<strong>/*.pp'].exclude('vendor/</strong>/<em>.pp', 'spec/**/</em>.pp').join())
+end
+```</p>
+
+<p>To finish with the Rakefile, we remove the code installed by default by
+<code>rspec-puppet</code>, which is obsolete given we included Puppetlabs' helper. And,
+since I'm fucking lazy, let's add a default task that performs validation,
+linting and testing in a single command.<br/>
+The final <code>Rakefile</code> looks like:
+```ruby
+require 'rake'
+require 'puppetlabs_spec_helper/rake_tasks'</p>
+
+<h1>Configured to be recognizable by Jenkins warnings plugin</h1>
+
+<p>require 'puppet-lint/tasks/puppet-lint'
+PuppetLint.configuration.ignore_paths = ["vendor/<strong>/*.pp", "spec/</strong>/*.pp"]
+PuppetLint.configuration.log_format =
+  "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"</p>
+
+<h1>Used by Jenkins to show tests report.</h1>
+
+<p>require 'ci/reporter/rake/rspec'
+ENV['CI_REPORTS'] = 'reports'</p>
+
+<h1>Invoked by Jenkins to validate manifest syntax</h1>
+
+<p>require 'puppet/face'
+desc "Perform puppet parser's validation on manifests"
+task :validate do
+  Puppet::Face[:parser, '0.0.1'].validate(FileList['<strong>/*.pp'].exclude('vendor/</strong>/<em>.pp', 'spec/**/</em>.pp').join())
+end</p>
+
+<p>desc "Run puppet-lint and rspec puppet in sequence"
+task :default => [:lint, :validate, :spec]
+```</p>
+
+<h2>Fixtures</h2>
+
+<p>As stated in
+<a href="https://puppetlabs.com/blog/the-next-generation-of-puppet-module-testing/">this post</a>
+from PuppetLabs, we need to setup a file that declares the fixtures we want to
+have in place when testing our codebase. Let's pretend the module has a
+dependency on PuppetLabs' <code>stdlib</code> (which is what happens in most cases, if,
+for example, you're using validation - and you <strong>DO</strong> validate your
+parameters, right?); we need to setup a <code>.fixtures.yml</code> file that looks like
+this:
+```yaml
+fixtures:
+  repositories:</p>
+
+<pre><code>stdlib: git://github.com/puppetlabs/puppetlabs-stdlib.git
+</code></pre>
+
+<p>  symlink:</p>
+
+<pre><code>&lt;modulename&gt;: "#{source_dir}"
+</code></pre>
+
+<p>```
+Remember that this file needs to be updated whenever module's dependencies
+change.</p>
+
+<h2>Modulefile</h2>
+
+<p>In the hope that someday Puppetlabs finally releases an API/client library to
+publish modules to the Forge (which I think should be very soon from now),
+let's create a <code>Modulefile</code> that describes the module and its dependencies.
+This will also be useful to instruct <code>librarian-puppet</code> about the modules it
+effectively needs to install.</p>
+
+<p>```
+name    '<author>-<modulename>'
+version '0.0.1'
+source 'UNKNOWN'
+author '<author>'
+license 'Apache License, Version 2.0'
+summary '...'
+description '.......'
+project_page 'UNKNOWN'</p>
+
+<h2>Add dependencies, if any:</h2>
+
+<p>dependency 'puppetlabs/stdlib', '>= 3.2.0'
+```</p>
+
+<h2>README</h2>
+
+<p>It's also good practice to add a <code>README</code>, as explained in
+<a href="https://puppetlabs.com/blog/writing-great-modules-an-introduction/">this must-read</a>
+from Puppetlabs itself. I won't go into details here, since apart from a common
+layout, information in this file vary greatly depending on the project.<br/>
+The only thing I feel to say is quoting the suggestion in that same article
+of reading the readme of Carl Caum's
+<a href="http://github.com/puppetlabs/puppetlabs-bacula">Bacula module</a>; that explains
+pretty everything.</p>
+
+<h2>Smoke tests</h2>
+
+<p>If you feel really cool, you can also add a smoke test into the <code>tests</code> folder,
+which is basically a working manifest that can be called directly with <code>puppet
+apply --noop</code>. If you're using the <code>module</code> face of the <code>puppet</code> command, it
+will automatically create a <code>init.pp</code> that includes the main module's class.
+Just, pay attention to the fact that you would need to keep this manifests
+up-to-date with your code (e.g. setting proper parameters and instantiating
+other resources that participate in the definition of a real, working
+use-case).</p>
+
+<h2>What happened to Git?</h2>
+
+<p>Till now, I completely left out versioning this skeleton project. This is
+because I didn't find yet my preferred way to properly handle versioning and easily
+enable to bootstrap new modules based on this skeleton. I don't exclude this
+way could be putting everything in a gem or rake task or bash script that can bootstrap a
+directory where a module is to be developed. Will see what the immediate future
+will suggest. For now, please allow me not to give an answer on this subject.</p>
+
+<h2>Additional resources</h2>
+
+<p>You can find additional information about testing Puppet code in
+<a href="https://puppetlabs.com/blog/the-next-generation-of-puppet-module-testing/">these</a>
+<a href="https://puppetlabs.com/blog/test-driven-development-with-puppet/">articles</a>
+from
+<a href="https://puppetlabs.com/blog/verifying-puppet-checking-syntax-and-writing-automated-tests/">Puppet Labs</a>.
+Note that few things, like, Cucumber for Puppet, are considered deprecated;
+nevertheless, they're worth reading if you care about quality.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -5,12 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Pre-flight debrief - Stefano Zanella's Blog</title>
+  <title>My (brief) journey on release management - Stefano Zanella's Blog</title>
   <meta name="author" content="Stefano Zanella">
 
   
-  <meta name="description" content="I&#8217;m writing this post as a sort of disclamer for the posts that will follow in
-the (hopefully near) future. I became a fan of documentation &hellip;">
+  <meta name="description" content="Choice of the format: gem or deb?
+Deb because:
+- I&#8217;m managing an application, not a library (cite Yehuda Katz post about this subject)
+- I want &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +21,7 @@ the (hopefully near) future. I became a fan of documentation &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief/">
+  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -79,7 +81,7 @@ the (hopefully near) future. I became a fan of documentation &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Pre-flight Debrief</h1>
+      <h1 class="entry-title">My (Brief) Journey on Release Management</h1>
     
     
       <p class="meta">
@@ -95,59 +97,71 @@ the (hopefully near) future. I became a fan of documentation &hellip;">
   
 
 
-<time datetime="2013-01-19T20:20:00+01:00" pubdate data-updated="true">Jan 19<span>th</span>, 2013</time>
+<time datetime="2013-02-07T20:10:00+01:00" pubdate data-updated="true">Feb 7<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I&#8217;m writing this post as a sort of disclamer for the posts that will follow in
-the (hopefully near) future.</p>
+<div class="entry-content"><p>Choice of the format: gem or deb?
+Deb because:
+- I&#8217;m managing an application, not a library (cite Yehuda Katz post about this
+  subject)
+- I want to make the application self contained so to avoid dependency
+  conflicts as much as possible (e.g. with puppet)
+- I still can&#8217;t figure out how to do the latter with gems</p>
 
-<p>I became a fan of documentation near three years ago. Since then, I mantained
-(and am still mantaining) a sort of private wiki where I try do document
-whatever I do. In some cases, this practice saved my ass: since for the moment
-I don&#8217;t work in a team, I&#8217;m forced to continuously move between tasks that span
-from the full Dev and Ops range. Sometimes quite some time can pass until I
-need to return to a previous task to fix/improve things. This can be daunting,
-since memory tends to be pretty unreliable in these cases; having a neat trace
-of what I did helped me to quickly restore the archived knowledge.<br/>
-Over time, documenting <strong>while</strong> doing has become almost a natural practice for
-me, at least for what concerns operations tasks.</p>
+<p>Choice of the filesystem layout -> Where to put files?
+Quote Filesystem Hierarchy Standard:</p>
 
-<p>As stated above, till now I kept this documentation almost private, just
-visible to interested friends that wanted to dig from time to time into what I
-did; now I feel this practice has to change.<br/>
-So, I decided to at least try to make my efforts public. I&#8217;m sure there won&#8217;t
-be crowds of developers or sysadmins waiting for my next post; I&#8217;m not doing it
-for this reason. I&#8217;ll just try to use the lever that is what in my opinion is
-the biggest benfit of open source culture: it forces you to be better at what
-you do.</p>
+<blockquote><p>/opt is reserved for the installation of add-on application software packages.</p>
 
-<p>So, this little detour over my recent history just to say one basic thing: I&#8217;m
-gonna store here almost everything. So, expect to find obvious things as well
-as not-so-obvious ones; actually, I suspect the former will overweight the latter
-at least for the moment :)</p>
+<p>A package to be installed in /opt must locate its static files in a separate
+/opt/<package> or /opt/<provider> directory tree</p>
 
-<p>Having clarified this basic concept, let&#8217;s see what the sudden future reserves:
-I&#8217;m gonna talk a lot in the following months about my efforts to automate the
-infrastructure I&#8217;m actually managing. This effort started slightly more than a
-year ago when I discovered the excellent <a href="http://continuousdelivery.com/">&#8220;Continuous Delivery&#8221; book</a>
-by <a href="https://twitter.com/jezhumble">Jez Humble</a> and David Farley.
-Meanwhile, I&#8217;ve done a lot to try to add some solid
-ground on the infrastructure while maintaining the existent. I now reached a
-point in which I can start to implement all those nice automation practices.<br/>
-I&#8217;ll try to convert documentation I&#8217;ve already written into something suitable
-for the public audience; but, since I don&#8217;t want to start yak shaving right
-from the beginning, I&#8217;ll try to stay pragmatic enough and start by writing
-currently on-air tasks. For this reason, I apologize in advance if some pieces
-will miss from what I&#8217;ll write.</p>
+<p>Programs to be invoked by users must be located in the directory
+/opt/<package>/bin</p>
 
-<p>I force myself now to stop adding to this post; enough self-centered writing
-for my tastes. Better to start writing something more practical; I&#8217;ll start
-with something very very basic and in very very little DevOps style: installing
-a Puppet master node.</p>
+<p>Host-specific configuration files must be installed in /etc/opt</p>
+
+<p>/usr is the second major section of the filesystem. /usr is shareable,
+read-only data. That means that /usr should be shareable between various
+FHS-compliant hosts and must not be written to. Any information that is
+host-specific or varies with time is stored elsewhere.</p>
+
+<p>Large software packages must not use a direct subdirectory under the /usr
+hierarchy.</p>
+
+<p>/usr/lib includes object files, libraries, and internal binaries that are not
+intended to be executed directly by users or shell scripts. [22]</p>
+
+<p>Applications may use a single subdirectory under /usr/lib. If an application
+uses a subdirectory, all architecture-dependent data exclusively used by the
+application must be placed within that subdirectory.</p>
+
+<p>/usr/bin : Most user commands
+Purpose</p>
+
+<p>This is the primary directory of executable commands on the system.
+Choice of /usr/lib + symlinks: depict idea, chosen because I feel better about
+it, and also seen more often in real packages (like OpenJDK). /opt seems to be
+used &#8220;manually&#8221; when installing pre-backed applications (like custom JVM
+versions or Java application server that just need to get extracted into a
+folder).</p></blockquote>
+
+<p>Classic packaging steps (as per common packaging guides):
+- download source package tarball
+- extract
+- ./configure
+- makea -> compile, almost not necessary in ruby
+- make install -> puts file in right place on filesystem, can be fooled to
+  install to a custom dir usually specifying (at least) a &#8211;prefix option in configure</p>
+
+<p>Identified steps for building/releasing the package:
+- generate source package -> depict structure, make rake task (cite puppetlabs source)
+ - tar format, just contains the full source tree (something like a clone of a
+   source repository)</p>
 </div>
 
 
@@ -170,12 +184,12 @@ a Puppet master node.</p>
   
 
 
-<time datetime="2013-01-19T20:20:00+01:00" pubdate data-updated="true">Jan 19<span>th</span>, 2013</time>
+<time datetime="2013-02-07T20:10:00+01:00" pubdate data-updated="true">Feb 7<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/devops/'>devops</a>
+    <a class='category' href='/blog/categories/deployment/'>deployment</a>, <a class='category' href='/blog/categories/devops-/'>devops,</a>, <a class='category' href='/blog/categories/package-/'>package,</a>
   
 </span>
 
@@ -184,7 +198,7 @@ a Puppet master node.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management/" >Tweet</a>
   
   
   
@@ -193,8 +207,10 @@ a Puppet master node.</p>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2013/01/22/speaking-in-tongues-with-ssl/" title="Previous Post: Speaking in tongues with SSL">&laquo; Speaking in tongues with SSL</a>
       
-        <a class="basic-alignment right" href="/blog/2013/01/22/speaking-in-tongues-with-ssl/" title="Next Post: Speaking in tongues with SSL">Speaking in tongues with SSL &raquo;</a>
+      
+        <a class="basic-alignment right" href="/blog/2013/02/12/puppet-module-skeleton/" title="Next Post: Puppet Module Skeleton, CI Friendly">Puppet Module Skeleton, CI Friendly &raquo;</a>
       
     </p>
   </footer>

@@ -1,24 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Stefano Zanella's Blog]]></title>
-  <link href="http://blog.dontwakethecat.net/atom.xml" rel="self"/>
-  <link href="http://blog.dontwakethecat.net/"/>
-  <updated>2013-02-13T23:21:08+01:00</updated>
-  <id>http://blog.dontwakethecat.net/</id>
-  <author>
-    <name><![CDATA[Stefano Zanella]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Puppet Module Skeleton, CI Friendly - Stefano Zanella's Blog</title>
+  <meta name="author" content="Stefano Zanella">
 
   
-  <entry>
-    <title type="html"><![CDATA[Puppet Module Skeleton, CI Friendly]]></title>
-    <link href="http://blog.dontwakethecat.net/blog/2013/02/12/puppet-module-skeleton/"/>
-    <updated>2013-02-12T20:24:00+01:00</updated>
-    <id>http://blog.dontwakethecat.net/blog/2013/02/12/puppet-module-skeleton</id>
-    <content type="html"><![CDATA[<h2>Introduction</h2>
+  <meta name="description" content="Introduction I&#8217;ll create here a skeleton that can be useful for developing Puppet modules that
+adhere to some of the basic good development &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/02/12/puppet-module-skeleton/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Stefano Zanella's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37813537-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.dontwakethecat.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Puppet Module Skeleton, CI Friendly</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-12T20:24:00+01:00" pubdate data-updated="true">Feb 12<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Introduction</h2>
 
 <p>I&#8217;ll create here a skeleton that can be useful for developing Puppet modules that
 adhere to some of the basic good development practices, such as testing and
@@ -486,273 +570,178 @@ from
 <a href="https://puppetlabs.com/blog/verifying-puppet-checking-syntax-and-writing-automated-tests/">Puppet Labs</a>.
 Note that few things, like, Cucumber for Puppet, are considered deprecated;
 nevertheless, they&#8217;re worth reading if you care about quality.</p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[My (brief) journey on release management]]></title>
-    <link href="http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management/"/>
-    <updated>2013-02-07T20:10:00+01:00</updated>
-    <id>http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management</id>
-    <content type="html"><![CDATA[<p>Choice of the format: gem or deb?
-Deb because:
-- I&#8217;m managing an application, not a library (cite Yehuda Katz post about this
-  subject)
-- I want to make the application self contained so to avoid dependency
-  conflicts as much as possible (e.g. with puppet)
-- I still can&#8217;t figure out how to do the latter with gems</p>
 
-<p>Choice of the filesystem layout -> Where to put files?
-Quote Filesystem Hierarchy Standard:</p>
+<span class="byline author vcard">Posted by <span class="fn">Stefano Zanella</span></span>
 
-<blockquote><p>/opt is reserved for the installation of add-on application software packages.</p>
+      
 
-<p>A package to be installed in /opt must locate its static files in a separate
-/opt/<package> or /opt/<provider> directory tree</p>
 
-<p>Programs to be invoked by users must be located in the directory
-/opt/<package>/bin</p>
 
-<p>Host-specific configuration files must be installed in /etc/opt</p>
 
-<p>/usr is the second major section of the filesystem. /usr is shareable,
-read-only data. That means that /usr should be shareable between various
-FHS-compliant hosts and must not be written to. Any information that is
-host-specific or varies with time is stored elsewhere.</p>
 
-<p>Large software packages must not use a direct subdirectory under the /usr
-hierarchy.</p>
 
-<p>/usr/lib includes object files, libraries, and internal binaries that are not
-intended to be executed directly by users or shell scripts. [22]</p>
 
-<p>Applications may use a single subdirectory under /usr/lib. If an application
-uses a subdirectory, all architecture-dependent data exclusively used by the
-application must be placed within that subdirectory.</p>
 
-<p>/usr/bin : Most user commands
-Purpose</p>
-
-<p>This is the primary directory of executable commands on the system.
-Choice of /usr/lib + symlinks: depict idea, chosen because I feel better about
-it, and also seen more often in real packages (like OpenJDK). /opt seems to be
-used &#8220;manually&#8221; when installing pre-backed applications (like custom JVM
-versions or Java application server that just need to get extracted into a
-folder).</p></blockquote>
-
-<p>Classic packaging steps (as per common packaging guides):
-- download source package tarball
-- extract
-- ./configure
-- makea -> compile, almost not necessary in ruby
-- make install -> puts file in right place on filesystem, can be fooled to
-  install to a custom dir usually specifying (at least) a &#8211;prefix option in configure</p>
-
-<p>Identified steps for building/releasing the package:
-- generate source package -> depict structure, make rake task (cite puppetlabs source)
- - tar format, just contains the full source tree (something like a clone of a
-   source repository)</p>
-]]></content>
-  </entry>
   
-  <entry>
-    <title type="html"><![CDATA[Speaking in tongues with SSL]]></title>
-    <link href="http://blog.dontwakethecat.net/blog/2013/01/22/speaking-in-tongues-with-ssl/"/>
-    <updated>2013-01-22T16:56:00+01:00</updated>
-    <id>http://blog.dontwakethecat.net/blog/2013/01/22/speaking-in-tongues-with-ssl</id>
-    <content type="html"><![CDATA[<p>This was a nice one; let me explain.</p>
-
-<p>I&#8217;ve setup a PotgreSQL host to hold all the various databases for the various
-services deployed in the infrastructure. Since I know I&#8217;m not a security
-expert, where I can I try to do the bare minumum needed and use SSL. This is
-the case for PostgreSQL; not only, but I try hard to enforce two-way
-certificate validation where possibile.</p>
-
-<!-- More -->
 
 
-<p>It turns out that despite the simplicity behind the concept of two-way
-certificate validation, very few <em>&#8220;modern&#8221;</em> services support that in a
-user-friendly way. I already had a chance to rant a bit on Twitter about the
-problems Puppet is currently facing with SSL; this time I want to tell you this
-story that involves the <a href="https://code.google.com/p/gerrit/">Gerrit Code Review</a>
-application and the way I solved the problem, which in my opinion is quite
-hacky (and will possibly break things in a near future).</p>
+<time datetime="2013-02-12T20:24:00+01:00" pubdate data-updated="true">Feb 12<span>th</span>, 2013</time>
+      
 
-<p>First, a little overview of two-way SSL certificate validation. Basically, in
-normal circumstances, during a SSL handshake, only the client verifies that the
-certificate the server is providing is valid (checking against a list of known
-and trusted Certificate Authorities); when performing two-way validation, this
-process is true also for the server. That is, the server expects the client to
-send a certificate and verifies that it can be trusted with the same mechanism.<br/>
-This is useful when you&#8217;re running your own PKI and can freely issue
-certificates to all your hosts; it becomes a form of authentication similar to
-that we all use when doing public key authentication in SSH (maybe even
-stronger).<br/>
-For this to work, obviously, there must be explicit configuration support on
-the client service to point to certificate, private key and CA that will be
-used when handshaking with the server. Also, note that you cannot simply
-disable certificate validation, since this will only lower the barrier <strong>on one
-side</strong> of the communication channel: the server will still require you (the
-client) to provide a valid certificate (in most cases you can tell the server
-to relax the constraint, but then this discussion would become a little
-pointless).</p>
-
-<p>Here is where problems begin: let&#8217;s look specifically at how this can be
-handled in Gerrit.<br/>
-In particular, let&#8217;s see how a typical database setup looks like in Gerrit:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="k">[database]</span>
-</span><span class='line'>  <span class="na">type</span> <span class="o">=</span> <span class="s">POSTGRESQL</span>
-</span><span class='line'><span class="s">  hostname = postgresql.derecom.it</span>
-</span><span class='line'><span class="s">  database = gerrit</span>
-</span><span class='line'><span class="s">  username = gerrit</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will tell JDBC to connect to <code>postgresql.derecom.it</code> and look for database
-<code>gerrit</code>, authenticating with user <code>gerrit</code> (password is handled in another
-file). See? No mention to <strong>SSL</strong>. Unofrtunately, JDBC doesn&#8217;t automatically
-recognizes that it needs to setup a SSL connection, and trying to boot the
-gerrit server results in this kind of error on the PosgtreSQL host:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="err">FATAL:</span>  <span class="err">no</span> <span class="err">pg_hba.conf</span> <span class="err">entry</span> <span class="err">for</span> <span class="err">host</span> <span class="err">&quot;x.y.z.w&quot;,</span> <span class="err">user</span> <span class="err">&quot;gerrit&quot;,</span> <span class="err">database</span> <span class="err">&quot;gerrit&quot;,</span> <span class="err">SSL</span> <span class="err">off</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>(that&#8217;s because I <strong>don&#8217;t allow unencrypted connections to databases</strong>).</p>
-
-<p>It seems that there&#8217;s no hope to solve this. Luckily, though, Gerrit use JDBC
-under the hood to manage the connection pool; looking through
-<a href="http://jdbc.postgresql.org/documentation/80/connect.html">JDBC PosgtreSQL driver documentation</a>,
-we can read that:</p>
-
-<blockquote><p> In addition to the standard connection parameters the driver supports a
- number of additional properties which can be used to specify additional
- driver behavior specific to PostgreSQL™. These properties may be specified
- in either the connection URL or an additional Properties object parameter to
- DriverManager.getConnection. The following examples illustrate the use of
- both methods to establish a SSL connection.</p>
-
-<p>String url = &#8220;jdbc:postgresql://localhost/test&#8221;;<br/>
-Properties props = new Properties();<br/>
-props.setProperty(&#8220;user&#8221;,&#8221;fred&#8221;);<br/>
-props.setProperty(&#8220;password&#8221;,&#8221;secret&#8221;);<br/>
-props.setProperty(&#8220;ssl&#8221;,&#8221;true&#8221;);<br/>
-Connection conn = DriverManager.getConnection(url, props);</p>
-
-<p>String url =<br/>
-&#8220;jdbc:postgresql://localhost/test?user=fred&amp;password=secret<strong>&amp;ssl=true</strong>&#8221;;<br/>
-Connection conn = DriverManager.getConnection(url);</p></blockquote>
-
-<p>So, it seems that if we could pass a <code>ssl</code> parameter to the JDBC URL we could
-enable SSL while connection to PostgreSQL. A first solution is to set the
-connection type to <code>JDBC</code> instead of <code>POSTGRESQL</code> in Gerrit configuration. This
-would allow you to directly specify the URL JDBC should connect to, parameters
-included.<br/>
-Since I didn&#8217;t know if I would have had to specify also the user/pass in that
-same URL, I wanted to try to stick to the <code>POSTGRESQL</code> type. Looking at
-<a href="https://gerrit.googlesource.com/gerrit/+/7029fc15df86e6ef886d67a8117a39d21320fe60/gerrit-pgm/src/main/java/com/google/gerrit/pgm/util/DataSourceProvider.java">this class&#8217; source code</a>,
-it turns out that Gerrit itself builds a JDBC URL, so using one of the other
-connection types is just a tiny wrapper over the JDBC type. However, the URL is
-built leaving out username and password, which are set separately when actually
-instantiating the connection, and the last variable in the URL concatenation is
-the database name. So, I modified the configuration by directly appending the
-<code>ssl</code> param to the database name:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ini'><span class='line'><span class="k">[database]</span>
-</span><span class='line'>  <span class="na">type</span> <span class="o">=</span> <span class="s">POSTGRESQL</span>
-</span><span class='line'><span class="s">  hostname = postgresql.derecom.it</span>
-</span><span class='line'><span class="s">  database = gerrit?ssl=true</span>
-</span><span class='line'><span class="s">  username = gerrit</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You know what? That works like a charm :)<br/>
-Obviously this is a bit hacky, and surely setting a JDBC is a more proper way
-to handle this thing, however if it works&#8230;</p>
-
-<p><strong>PS:</strong> I left out from the discussion a fundamental step, which is passing the
-certificate, private key and CA to Gerrit to correctly handle the SSL
-handshake. This involves passing two additional properties to Gerrit startup
-command; I&#8217;ve already written down about it in
-<a href="https://gist.github.com/4124338">this Gist</a>, so I won&#8217;t repeat myself here.</p>
-
-<h2>Conclusion</h2>
-
-<p>So, having spent almost 2 hours fixing this issue and writing about it, what I
-can hope for is that developers start to care a little more about SSL and the
-various ways it can be used. This would surely help changing the impression
-that SSL is a though beast, as also noticed by
-<a href="https://twitter.com/_masterzen_">Brice Figureau</a> in
-<a href="http://www.masterzen.fr/2010/11/14/puppet-ssl-explained/">this post about Puppet SSL PKI</a>, and making our
-infrastructures more secure overall.</p>
-]]></content>
-  </entry>
+<span class="categories">
   
-  <entry>
-    <title type="html"><![CDATA[Pre-flight debrief]]></title>
-    <link href="http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief/"/>
-    <updated>2013-01-19T20:20:00+01:00</updated>
-    <id>http://blog.dontwakethecat.net/blog/2013/01/19/pre-flight-debrief</id>
-    <content type="html"><![CDATA[<p>I&#8217;m writing this post as a sort of disclamer for the posts that will follow in
-the (hopefully near) future.</p>
-
-<p>I became a fan of documentation near three years ago. Since then, I mantained
-(and am still mantaining) a sort of private wiki where I try do document
-whatever I do. In some cases, this practice saved my ass: since for the moment
-I don&#8217;t work in a team, I&#8217;m forced to continuously move between tasks that span
-from the full Dev and Ops range. Sometimes quite some time can pass until I
-need to return to a previous task to fix/improve things. This can be daunting,
-since memory tends to be pretty unreliable in these cases; having a neat trace
-of what I did helped me to quickly restore the archived knowledge.<br/>
-Over time, documenting <strong>while</strong> doing has become almost a natural practice for
-me, at least for what concerns operations tasks.</p>
-
-<p>As stated above, till now I kept this documentation almost private, just
-visible to interested friends that wanted to dig from time to time into what I
-did; now I feel this practice has to change.<br/>
-So, I decided to at least try to make my efforts public. I&#8217;m sure there won&#8217;t
-be crowds of developers or sysadmins waiting for my next post; I&#8217;m not doing it
-for this reason. I&#8217;ll just try to use the lever that is what in my opinion is
-the biggest benfit of open source culture: it forces you to be better at what
-you do.</p>
-
-<p>So, this little detour over my recent history just to say one basic thing: I&#8217;m
-gonna store here almost everything. So, expect to find obvious things as well
-as not-so-obvious ones; actually, I suspect the former will overweight the latter
-at least for the moment :)</p>
-
-<p>Having clarified this basic concept, let&#8217;s see what the sudden future reserves:
-I&#8217;m gonna talk a lot in the following months about my efforts to automate the
-infrastructure I&#8217;m actually managing. This effort started slightly more than a
-year ago when I discovered the excellent <a href="http://continuousdelivery.com/">&#8220;Continuous Delivery&#8221; book</a>
-by <a href="https://twitter.com/jezhumble">Jez Humble</a> and David Farley.
-Meanwhile, I&#8217;ve done a lot to try to add some solid
-ground on the infrastructure while maintaining the existent. I now reached a
-point in which I can start to implement all those nice automation practices.<br/>
-I&#8217;ll try to convert documentation I&#8217;ve already written into something suitable
-for the public audience; but, since I don&#8217;t want to start yak shaving right
-from the beginning, I&#8217;ll try to stay pragmatic enough and start by writing
-currently on-air tasks. For this reason, I apologize in advance if some pieces
-will miss from what I&#8217;ll write.</p>
-
-<p>I force myself now to stop adding to this post; enough self-centered writing
-for my tastes. Better to start writing something more practical; I&#8217;ll start
-with something very very basic and in very very little DevOps style: installing
-a Puppet master node.</p>
-]]></content>
-  </entry>
+    <a class='category' href='/blog/categories/devops-/'>devops,</a>, <a class='category' href='/blog/categories/jenkins/'>jenkins</a>, <a class='category' href='/blog/categories/puppet-/'>puppet,</a>, <a class='category' href='/blog/categories/ruby-/'>ruby,</a>
   
-</feed>
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/02/12/puppet-module-skeleton/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/02/12/puppet-module-skeleton/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/07/my-brief-journey-on-release-management/" title="Previous Post: My (brief) journey on release management">&laquo; My (brief) journey on release management</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://blog.dontwakethecat.net" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://blog.dontwakethecat.net/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      <a href="mailto:" alt="E-Mail"><img src="/images/Envelope.png"></a>
+      <a href="http://blog.dontwakethecat.net/atom.xml" alt="subscribe feed"><img src="/images/rss_big.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/12/puppet-module-skeleton/">Puppet Module Skeleton, CI Friendly</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/07/my-brief-journey-on-release-management/">My (brief) journey on release management</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/speaking-in-tongues-with-ssl/">Speaking in tongues with SSL</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/19/pre-flight-debrief/">Pre-flight debrief</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stefanozanella">@stefanozanella</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stefanozanella',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("stefano_zanella", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/stefano_zanella" class="twitter-follow-button" data-show-count="false">Follow @stefano_zanella</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Stefano Zanella -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
