@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Master of Puppets (vol. II) - Stefano Zanella's Blog</title>
+  <meta name="author" content="Stefano Zanella">
+
+  
+  <meta name="description" content="I&#8217;ll continue here what I&#8217;ll started in the
+previous post.
+We now have a working Puppet Master installation; still, if we want to update &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/01/22/master-of-puppets-vol-ii/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Stefano Zanella's Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37813537-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.dontwakethecat.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Master of Puppets (Vol. II)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-22T15:14:00+01:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&#8217;ll continue here what I&#8217;ll started in the
+<a href="http://blog.dontwakethecat.net/blog/2013/01/20/master-of-puppets/">previous post</a>.
+We now have a working Puppet Master installation; still, if we want to update
+the configuration of the master itself or of one of the managed nodes, we need
+to log into the virtual machine and manually edit the files in <code>/etc/puppet</code>.<br/>
+What we want to achieve in the long term, though, is to not need to SSH into
+machines for this kind of normal operations tasks.</p>
+
+<!-- More -->
+
+
+<p>So we need a way to extract the configuration contained in the <code>/etc/puppet</code>
+directory so that we can manage it from our laptop with our favorite editor.
+While we&#8217;re at this, we also put that configuration under version control,
+which is always a good thing to do.<br/>
+The two friends that will help us in this little journey are
+<a href="http://jenkins-ci.org/">Jenkins</a> and the
+<a href="http://code.google.com/p/gerrit/">Gerrit Code Review</a> application.</p>
+
+<p>Plugins needed:
+<a href="https://wiki.jenkins-ci.org/display/JENKINS/SSH+plugin">SSH Plugin</a>
+NO &#8211;> <a href="https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+SSH+Plugin">Publish over SSH</a>
+NO &#8211;> <a href="https://wiki.jenkins-ci.org/display/JENKINS/SSH+Agent+Plugin">SSH Agent Plugin</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install git
+</span><span class='line'>usermod -s /bin/bash puppet
+</span><span class='line'>mkdir ~puppet/.ssh
+</span><span class='line'>vi ~puppet/.ssh/authorized_keys
+</span><span class='line'>...show options
+</span><span class='line'>chown puppet:puppet -R ~puppet/.ssh/
+</span><span class='line'>chmod og-rw -R ~puppet/.ssh/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Configure job in Jenkins
+&#8211;> Setup git URL</p>
+
+<p>Configure Gerrit trigger</p>
+
+<p>Configure Gerrit to handle non-interactive user
+* Perform initial connection with Jenkins user
+* Add SSH public key
+* Login as Administrator
+* Groups -> List -> Non-interactive users
+* Add user Jenkins to group</p>
+
+<p>Configure access rights for non-interactive users
+* Login as administrator
+* Projects -> All-Projects -> Access
+* Reference: refs/* -> Label Verified +1, -1 Non-interactive users; Submit
+  ALLOW Registerd Users
+Configure plugin in Jenkins</p>
+
+<p>Setup connection params
+Setup default submit when +2 &#8211;> add &#8216;&#8211;submit&#8217; to Successfull verify command
+<Add screenshot></p>
+
+<p>Setup global username and email for Git Plugin in Manage Jenkins</p>
+
+<p>Create Gerrit project
+ssh -p 29418 stefano.zanella@review.derecom.it gerrit create-project &#8211;name puppetmaster-config
+git clone ssh://stefano.zanella@review.derecom.it:29418/puppetmaster-config.git
+cd puppetmaster-config
+git config remote.origin.push refs/heads/<em>:refs/for/</em>
+scp -P 29418 stefano.zanella@review.derecom.it:hooks/commit-msg .git/hooks</p>
+
+<p>Add puppet configuration
+scp -r root@puppet.derecom.it:/etc/puppet/* .
+touch manifests/.gitkeep
+touch modules/.gitkeep
+git add -A
+git commit -m &#8220;Store current configuration&#8221;
+git push</p>
+
+<p>Create Jenkins job for reviewing configuration changes
+puppetmaster-config-review
+Source Code Management: Git
+Repositories: ssh://jenkins@review.derecom.it:29418/puppetmaster-config
+Click on Advanced
+Refspec $GERRIT_REFSPEC
+Branches to build $GERRIT_BRANCH
+Click on Advanced
+Choosing Strategy = Gerrit Trigger
+Build Triggers
+Select Gerrit event
+Click Advanced
+Verify votes:
+0, 1, -1, 0
+0, 2, -2, 0
+Trigger on Patchset Created
+Gerrit project: Type Plain, Pattern puppetmaster-config, Branches: Type Path
+Branches **
+Build -> Add build step -> Execute Shell
+Command:
+echo &#8220;Nothing to check, build OK&#8221;
+exit 0</p>
+
+<p>Add Gerrit host to known hosts on the slave. Also add Jenkins public/private
+key to slave .ssh, otherwise it won&#8217;t be able to connect to Gerrit.</p>
+
+<p>Add Jenkins job to update configuration on Puppet Master
+puppetmaster-config-deploy
+Source Code Management: None
+Build Triggers: Gerrit Event
+Gerrit Trigger:
+Silent Mode on
+Trigger on: Change merged
+Gerrit project: as above
+Build: execute shell script on remote host using ssh
+SSH Site: puppet@puppet.derecom.it:22
+Command: cd /etc/puppet &amp;&amp; git pull</p>
+
+<p>Note that this kind of trigger mode cannot be tested in Jenkins with the
+Gerrit tool in the dashboard&#8217;s homepage. You must actually push a change and
+test the whole workflow.</p>
+
+<p>Swap configuration directory with repository
+cp -r /etc/puppet /etc/puppet.bak
+git clone https://review.derecom.it/puppetmaster-config /etc/puppet</p>
+
+<p>Add Jenkins job to update configuration on Puppet Master
+puppetmaster-config-deploy
+Source Code Management: None
+Build Triggers: Gerrit Event
+Gerrit Trigger:
+Silent Mode on
+Trigger on: Change merged
+Gerrit project: as above
+Build: execute shell script on remote host using ssh
+SSH Site: puppet@puppet.derecom.it:22
+Command: source .bash_profile &amp;&amp; cd /etc/puppet &amp;&amp; git pull &amp;&amp; rake</p>
+
+<p>Rake default task: DESCRIPTION!!!</p>
+
+<p>Note that this kind of trigger mode cannot be tested in Jenkins with the
+Gerrit tool in the dashboard&#8217;s homepage. You must actually push a change and
+test the whole workflow.</p>
+
+<p>Add CA to ca-bundle
+cat /etc/pki/tls/certs/Derecom-Auth-CA-bundle.crt | ssh root@puppet.derecom.it &#8220;cat >> /etc/pki/tls/certs/ca-bundle.crt&#8221;</p>
+
+<p>Install rbenv on puppet master
+yum groupinstall &#8216;development tools&#8217;
+yum install zlib-devel libxml2-devel libxslt-devel openssl-devel
+su - puppet -s /bin/bash
+git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
+git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo &#8216;export PATH=&#8221;$HOME/.rbenv/bin:$PATH&#8221;&#8217; >> ~/.bash_profile
+echo &#8216;eval &#8220;$(rbenv init -)&#8221;&#8217; >> ~/.bash_profile</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Zanella</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-22T15:14:00+01:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/howto/'>howto</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/01/22/master-of-puppets-vol-ii/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/01/22/master-of-puppets-vol-ii/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/20/master-of-puppets/" title="Previous Post: Master of Puppets">&laquo; Master of Puppets</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/22/speaking-in-tongues-with-ssl/" title="Next Post: Speaking in tongues with SSL">Speaking in tongues with SSL &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="recent_posts">
+      <li class="post">
+      <a href="http://blog.dontwakethecat.net" alt="Home"><img src="/images/Home.png"></a>
+      <a href="http://blog.dontwakethecat.net/archives/" alt="Archives"><img src="/images/Calendar.png"></a>
+      <a href="mailto:" alt="E-Mail"><img src="/images/Envelope.png"></a>
+      <a href="http://blog.dontwakethecat.net/atom.xml" alt="subscribe feed"><img src="/images/rss_big.png"></a>
+      </li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/12/puppet-module-skeleton/">Puppet Module Skeleton, CI Friendly</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/07/my-brief-journey-on-release-management/">My (brief) journey on release management</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/speaking-in-tongues-with-ssl/">Speaking in tongues with SSL</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/22/master-of-puppets-vol-ii/">Master of Puppets (vol. II)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/20/master-of-puppets/">Master of Puppets</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stefanozanella">@stefanozanella</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stefanozanella',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("stefano_zanella", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/stefano_zanella" class="twitter-follow-button" data-show-count="false">Follow @stefano_zanella</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Stefano Zanella -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
