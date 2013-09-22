@@ -9,6 +9,7 @@ categories: community, thoughts, thanks, eurucamp
 expect things to make much sense from now on. It might also be long, and I apologise in
 advance for that.
 
+<!-- More -->
 This post started as a way to thank everybody I met at eurucamp last month in
 Berlin, as I felt that a tweet wasn't enough, but it turned out to be the most
 difficult piece I've ever written.  
