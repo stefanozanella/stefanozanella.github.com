@@ -112,7 +112,7 @@ fears can be.
 The only regret I have is that I missed to say a proper goodbye; I count that
 as a promise to meet soon around London ;-)
 
-I also have to thank everyone who shared her story with me. In no
+I also have to thank everyone who shared a personal story with me. In no
 particular order, and probably with many omissions: Fanny, Carmen, Carmen and
 his husband Enrique, Jano, José, Darìo, Sebastian, Irene and Josh.
 
