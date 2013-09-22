@@ -72,7 +72,8 @@ to decide _what to keep_ from a human relationship.
 
 Of course, all of this is due to the people I met and spent time with there.
 I would like to thank all of them (but I also know that I'm going to forget
-someone, so please forgive me in advance).  
+someone, so please forgive me in advance and let me know so I can hide my shame
+by updating the post :).  
 I cannot avoid to start by mentioning
 the staff of organizers. Without their continuous efforts to make such an
 amazing conference, there would have been no ground for this change to happen
@@ -83,7 +84,7 @@ to spontaneously happen. Believe me, that's not so obvious, and the fact they re
 time for people to (almost) self-organize (which also means that everybody
 could choose _where_ to do _what_), before and during the conference,
 changed the perspective of the whole week.
-So, many many thanks to Dajana, Alex, Florian, Guillermo, Fanny, Lucas, Josè,
+So, many many thanks to Dajana, Alex, Florian, Matthias, Guillermo, Fanny, Lucas, Josè,
 Mari - and a huge sorry to all who I'm forgetting or didn't know about, this
 thank is for you too!
 
