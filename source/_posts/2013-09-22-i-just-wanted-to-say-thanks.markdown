@@ -3,7 +3,7 @@ layout: post
 title: "I just wanted to say thanks..."
 date: 2013-09-22 18:00
 comments: true
-categories: community, thoughts, thanks, eurucamp
+categories: community thoughts thanks eurucamp
 ---
 **Disclamer**: this post is about feelings, and it's written by me, so don't
 expect things to make much sense from now on. It might also be long, and I apologise in
