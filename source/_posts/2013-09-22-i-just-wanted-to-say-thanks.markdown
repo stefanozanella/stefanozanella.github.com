@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "I just wanted to say thanks..."
-date: 2013-09-22 18:00
+date: 2013-09-22 19:00
 comments: true
 categories: community thoughts thanks eurucamp
 ---
