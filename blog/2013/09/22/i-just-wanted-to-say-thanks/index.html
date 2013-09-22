@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Stefano Zanella's Blog</title>
+  <title>I just wanted to say thanks... - Stefano Zanella's Blog</title>
   <meta name="author" content="Stefano Zanella">
 
   
@@ -19,7 +19,7 @@ expect things to make much sense from now on. It might also be &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.dontwakethecat.net/">
+  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/09/22/i-just-wanted-to-say-thanks/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -74,15 +74,12 @@ expect things to make much sense from now on. It might also be &hellip;">
 </nav> -->
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/09/22/i-just-wanted-to-say-thanks/">I Just Wanted to Say Thanks&#8230;</a></h1>
+      <h1 class="entry-title">I Just Wanted to Say Thanks...</h1>
     
     
       <p class="meta">
@@ -105,7 +102,7 @@ expect things to make much sense from now on. It might also be &hellip;">
   </header>
 
 
-  <div class="entry-content"><p><strong>Disclamer</strong>: this post is about feelings, and it&#8217;s written by me, so don&#8217;t
+<div class="entry-content"><p><strong>Disclamer</strong>: this post is about feelings, and it&#8217;s written by me, so don&#8217;t
 expect things to make much sense from now on. It might also be long, and I apologise in
 advance for that.</p>
 
@@ -220,72 +217,16 @@ his husband Enrique, Jano, José, Darìo, Sebastian, Irene and Josh.</p>
 <p>PS: If anyone finds the piece of heart I left in Berlin, please don&#8217;t touch it.
 I&#8217;ll come back to pick it up later.</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/12/puppet-module-skeleton/">Puppet Module Skeleton, CI Friendly</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Stefano Zanella</span></span>
 
-<time datetime="2013-02-12T20:24:00+01:00" pubdate data-updated="true">Feb 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Introduction</h2>
-
-<p>I&#8217;ll create here a skeleton that can be useful for developing Puppet modules that
-adhere to some of the basic good development practices, such as testing and
-continuous integration.
-Why don&#8217;t I just use <code>puppet module generate</code>, you say? Because I want to have a more
-complete testing framework in place, and also have some additional
-facilities for reporting on tests. Though, using Puppet&#8217;s <strong>module</strong> face isn&#8217;t
-incompatible with what depicted here; you can just run it before performing the
-steps that follow, ignoring the creation of module&#8217;s directories.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/12/puppet-module-skeleton/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/07/my-brief-journey-on-release-management/">My (Brief) Journey on Release Management</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -297,302 +238,38 @@ steps that follow, ignoring the creation of module&#8217;s directories.</p>
   
 
 
-<time datetime="2013-02-07T20:10:00+01:00" pubdate data-updated="true">Feb 7<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Choice of the format: gem or deb?
-Deb because:
-- I&#8217;m managing an application, not a library (cite Yehuda Katz post about this
-  subject)
-- I want to make the application self contained so to avoid dependency
-  conflicts as much as possible (e.g. with puppet)
-- I still can&#8217;t figure out how to do the latter with gems</p>
-
-<p>Choice of the filesystem layout -> Where to put files?
-Quote Filesystem Hierarchy Standard:</p>
-
-<blockquote><p>/opt is reserved for the installation of add-on application software packages.</p>
-
-<p>A package to be installed in /opt must locate its static files in a separate
-/opt/<package> or /opt/<provider> directory tree</p>
-
-<p>Programs to be invoked by users must be located in the directory
-/opt/<package>/bin</p>
-
-<p>Host-specific configuration files must be installed in /etc/opt</p>
-
-<p>/usr is the second major section of the filesystem. /usr is shareable,
-read-only data. That means that /usr should be shareable between various
-FHS-compliant hosts and must not be written to. Any information that is
-host-specific or varies with time is stored elsewhere.</p>
-
-<p>Large software packages must not use a direct subdirectory under the /usr
-hierarchy.</p>
-
-<p>/usr/lib includes object files, libraries, and internal binaries that are not
-intended to be executed directly by users or shell scripts. [22]</p>
-
-<p>Applications may use a single subdirectory under /usr/lib. If an application
-uses a subdirectory, all architecture-dependent data exclusively used by the
-application must be placed within that subdirectory.</p>
-
-<p>/usr/bin : Most user commands
-Purpose</p>
-
-<p>This is the primary directory of executable commands on the system.
-Choice of /usr/lib + symlinks: depict idea, chosen because I feel better about
-it, and also seen more often in real packages (like OpenJDK). /opt seems to be
-used &#8220;manually&#8221; when installing pre-backed applications (like custom JVM
-versions or Java application server that just need to get extracted into a
-folder).</p></blockquote>
-
-<p>Classic packaging steps (as per common packaging guides):
-- download source package tarball
-- extract
-- ./configure
-- makea -> compile, almost not necessary in ruby
-- make install -> puts file in right place on filesystem, can be fooled to
-  install to a custom dir usually specifying (at least) a &#8211;prefix option in configure</p>
-
-<p>Identified steps for building/releasing the package:
-- generate source package -> depict structure, make rake task (cite puppetlabs source)
- - tar format, just contains the full source tree (something like a clone of a
-   source repository)</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2013-09-22T18:00:00+02:00" pubdate data-updated="true">Sep 22<span>nd</span>, 2013</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/22/speaking-in-tongues-with-ssl/">Speaking in Tongues With SSL</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/community-/'>community,</a>, <a class='category' href='/blog/categories/eurucamp/'>eurucamp</a>, <a class='category' href='/blog/categories/thanks-/'>thanks,</a>, <a class='category' href='/blog/categories/thoughts-/'>thoughts,</a>
+  
+</span>
 
 
-<time datetime="2013-01-22T16:56:00+01:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>This was a nice one; let me explain.</p>
-
-<p>I&#8217;ve setup a PotgreSQL host to hold all the various databases for the various
-services deployed in the infrastructure. Since I know I&#8217;m not a security
-expert, where I can I try to do the bare minumum needed and use SSL. This is
-the case for PostgreSQL; not only, but I try hard to enforce two-way
-certificate validation where possibile.</p>
-
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/09/22/i-just-wanted-to-say-thanks/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/09/22/i-just-wanted-to-say-thanks/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/22/speaking-in-tongues-with-ssl/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/22/master-of-puppets-vol-ii/">Master of Puppets (Vol. II)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-22T15:14:00+01:00" pubdate data-updated="true">Jan 22<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&#8217;ll continue here what I&#8217;ll started in the
-<a href="http://blog.dontwakethecat.net/blog/2013/01/20/master-of-puppets/">previous post</a>.
-We now have a working Puppet Master installation; still, if we want to update
-the configuration of the master itself or of one of the managed nodes, we need
-to log into the virtual machine and manually edit the files in <code>/etc/puppet</code>.<br/>
-What we want to achieve in the long term, though, is to not need to SSH into
-machines for this kind of normal operations tasks.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/22/master-of-puppets-vol-ii/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2013/02/12/puppet-module-skeleton/" title="Previous Post: Puppet Module Skeleton, CI Friendly">&laquo; Puppet Module Skeleton, CI Friendly</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/20/master-of-puppets/">Master of Puppets</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-20T01:16:00+01:00" pubdate data-updated="true">Jan 20<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Let me start the real first post of this blog (apart from the introduction)
-with a citation. Despite the title, I won&#8217;t talk about music. Instead, I&#8217;ll
-show you a photo:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/01/20/master-of-puppets/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/19/pre-flight-debrief/">Pre-flight Debrief</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-19T20:20:00+01:00" pubdate data-updated="true">Jan 19<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I&#8217;m writing this post as a sort of disclamer for the posts that will follow in
-the (hopefully near) future.</p>
-
-<p>I became a fan of documentation near three years ago. Since then, I mantained
-(and am still mantaining) a sort of private wiki where I try do document
-whatever I do. In some cases, this practice saved my ass: since for the moment
-I don&#8217;t work in a team, I&#8217;m forced to continuously move between tasks that span
-from the full Dev and Ops range. Sometimes quite some time can pass until I
-need to return to a previous task to fix/improve things. This can be daunting,
-since memory tends to be pretty unreliable in these cases; having a neat trace
-of what I did helped me to quickly restore the archived knowledge.<br/>
-Over time, documenting <strong>while</strong> doing has become almost a natural practice for
-me, at least for what concerns operations tasks.</p>
-
-<p>As stated above, till now I kept this documentation almost private, just
-visible to interested friends that wanted to dig from time to time into what I
-did; now I feel this practice has to change.<br/>
-So, I decided to at least try to make my efforts public. I&#8217;m sure there won&#8217;t
-be crowds of developers or sysadmins waiting for my next post; I&#8217;m not doing it
-for this reason. I&#8217;ll just try to use the lever that is what in my opinion is
-the biggest benfit of open source culture: it forces you to be better at what
-you do.</p>
-
-<p>So, this little detour over my recent history just to say one basic thing: I&#8217;m
-gonna store here almost everything. So, expect to find obvious things as well
-as not-so-obvious ones; actually, I suspect the former will overweight the latter
-at least for the moment :)</p>
-
-<p>Having clarified this basic concept, let&#8217;s see what the sudden future reserves:
-I&#8217;m gonna talk a lot in the following months about my efforts to automate the
-infrastructure I&#8217;m actually managing. This effort started slightly more than a
-year ago when I discovered the excellent <a href="http://continuousdelivery.com/">&#8220;Continuous Delivery&#8221; book</a>
-by <a href="https://twitter.com/jezhumble">Jez Humble</a> and David Farley.
-Meanwhile, I&#8217;ve done a lot to try to add some solid
-ground on the infrastructure while maintaining the existent. I now reached a
-point in which I can start to implement all those nice automation practices.<br/>
-I&#8217;ll try to convert documentation I&#8217;ve already written into something suitable
-for the public audience; but, since I don&#8217;t want to start yak shaving right
-from the beginning, I&#8217;ll try to stay pragmatic enough and start by writing
-currently on-air tasks. For this reason, I apologize in advance if some pieces
-will miss from what I&#8217;ll write.</p>
-
-<p>I force myself now to stop adding to this post; enough self-centered writing
-for my tastes. Better to start writing something more practical; I&#8217;ll start
-with something very very basic and in very very little DevOps style: installing
-a Puppet master node.</p>
 </div>
-  
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -610,7 +287,7 @@ a Puppet master node.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/09/22/i-just-wanted-to-say-thanks/">I just wanted to say thanks&#8230;</a>
+        <a href="/blog/2013/09/22/i-just-wanted-to-say-thanks/">I just wanted to say thanks...</a>
       </li>
     
       <li class="post">
@@ -635,7 +312,7 @@ a Puppet master node.</p>
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/stefanozanella">@stefanozanella</a> on GitHub
@@ -665,7 +342,7 @@ a Puppet master node.</p>
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -684,6 +361,7 @@ a Puppet master node.</p>
 
   
 </aside>
+
 
     </div>
   </div>

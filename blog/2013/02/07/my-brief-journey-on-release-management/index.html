@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: ssl - Stefano Zanella's Blog</title>
+  <title>My (brief) journey on release management - Stefano Zanella's Blog</title>
   <meta name="author" content="Stefano Zanella">
 
   
-  <meta name="description" content="Category: ssl">
+  <meta name="description" content="Choice of the format: gem or deb?
+Deb because:
+- I&#8217;m managing an application, not a library (cite Yehuda Katz post about this subject)
+- I want &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.dontwakethecat.netblog/categories/ssl/">
+  <link rel="canonical" href="http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -74,35 +77,143 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Ssl</h1>
+    
+      <h1 class="entry-title">My (Brief) Journey on Release Management</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-07T20:10:00+01:00" pubdate data-updated="true">Feb 7<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Choice of the format: gem or deb?
+Deb because:
+- I&#8217;m managing an application, not a library (cite Yehuda Katz post about this
+  subject)
+- I want to make the application self contained so to avoid dependency
+  conflicts as much as possible (e.g. with puppet)
+- I still can&#8217;t figure out how to do the latter with gems</p>
 
-  
-  <h2>2013</h2>
+<p>Choice of the filesystem layout -> Where to put files?
+Quote Filesystem Hierarchy Standard:</p>
 
-<article>
-  
-<h1><a href="/blog/2013/01/22/speaking-in-tongues-with-ssl/">Speaking in tongues with SSL</a></h1>
-<time datetime="2013-01-22T16:56:00+01:00" pubdate><span class='month'>Jan</span> <span class='day'>22</span> <span class='year'>2013</span></time>
+<blockquote><p>/opt is reserved for the installation of add-on application software packages.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/ssl/'>ssl</a>, <a class='category' href='/blog/categories/tricks/'>tricks</a></span>
-</footer>
+<p>A package to be installed in /opt must locate its static files in a separate
+/opt/<package> or /opt/<provider> directory tree</p>
 
+<p>Programs to be invoked by users must be located in the directory
+/opt/<package>/bin</p>
 
-</article>
+<p>Host-specific configuration files must be installed in /etc/opt</p>
 
+<p>/usr is the second major section of the filesystem. /usr is shareable,
+read-only data. That means that /usr should be shareable between various
+FHS-compliant hosts and must not be written to. Any information that is
+host-specific or varies with time is stored elsewhere.</p>
+
+<p>Large software packages must not use a direct subdirectory under the /usr
+hierarchy.</p>
+
+<p>/usr/lib includes object files, libraries, and internal binaries that are not
+intended to be executed directly by users or shell scripts. [22]</p>
+
+<p>Applications may use a single subdirectory under /usr/lib. If an application
+uses a subdirectory, all architecture-dependent data exclusively used by the
+application must be placed within that subdirectory.</p>
+
+<p>/usr/bin : Most user commands
+Purpose</p>
+
+<p>This is the primary directory of executable commands on the system.
+Choice of /usr/lib + symlinks: depict idea, chosen because I feel better about
+it, and also seen more often in real packages (like OpenJDK). /opt seems to be
+used &#8220;manually&#8221; when installing pre-backed applications (like custom JVM
+versions or Java application server that just need to get extracted into a
+folder).</p></blockquote>
+
+<p>Classic packaging steps (as per common packaging guides):
+- download source package tarball
+- extract
+- ./configure
+- makea -> compile, almost not necessary in ruby
+- make install -> puts file in right place on filesystem, can be fooled to
+  install to a custom dir usually specifying (at least) a &#8211;prefix option in configure</p>
+
+<p>Identified steps for building/releasing the package:
+- generate source package -> depict structure, make rake task (cite puppetlabs source)
+ - tar format, just contains the full source tree (something like a clone of a
+   source repository)</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Zanella</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-07T20:10:00+01:00" pubdate data-updated="true">Feb 7<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/deployment/'>deployment</a>, <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/package/'>package</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management/" data-via="stefano_zanella" data-counturl="http://blog.dontwakethecat.net/blog/2013/02/07/my-brief-journey-on-release-management/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/22/speaking-in-tongues-with-ssl/" title="Previous Post: Speaking in tongues with SSL">&laquo; Speaking in tongues with SSL</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/12/puppet-module-skeleton/" title="Next Post: Puppet Module Skeleton, CI Friendly">Puppet Module Skeleton, CI Friendly &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
 </div>
