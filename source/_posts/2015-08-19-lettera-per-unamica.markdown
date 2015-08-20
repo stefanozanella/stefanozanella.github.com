@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Lettera per un'amica"
+title: "Lettera per Un'Amica"
 date: 2015-08-19 21:34
-comments: true
+comments: false
 categories: personal
 ---
 
@@ -21,11 +21,11 @@ of neglect; I hope you don't mind.
 
 I like the place; the river, the low bank, the weeping willows bending under the
 breeze. It's so beautiful and peaceful and unreal it feels like being projected
-inside a children's dream.
+inside a children's dream.  
 It might sound incredible, but so far it's the place that reminds me of my
 hometown the most here around: the post-industrial landscape, the glare of the sun in the water, 
 the boats, that peculiar smell of river the wind brings to the nose from time 
-to time. I felt like a small Proust eating his madeleine.
+to time. I felt like a small Proust eating his madeleine.  
 For some reason seeing a hornet buzzing around a yellow flower, finding a spider
 patiently building its architectural prodigy across the stems, spotting
 all those small insects finding a shelter in between the wild grasses - all of
@@ -44,7 +44,7 @@ here just because I miss you so much, every word, every smile, every single
 second we spent together.
 
 Yet, I got to accept the choice you made. Thinking back to this past year, I
-can't stop wondering about all the "friends" that turned their back to me. 
+can't stop wondering about all the "friends" that turned their back to me.  
 Of all of them, you have
 been the most sincere, and probably the only one that deserves to be called like
 that. You didn't put on your face a patronising mask, you didn't come up with
@@ -58,9 +58,9 @@ refused.
 Luckily, though, I'm not completely alone. I'm blessed to have met on my way
 somebody capable of showing me her love in the only way I find significant: not
 with flattery, not with words, not with epic proofs, but rather with small everyday
-signs.
+signs.  
 I'm starting to see some sparks of light, some moments of serenity that
-make me wonder things might get better.
+make me wonder things might get better.  
 She might even succeed in rescuing me from this darkness that seems to live deep
 inside me; I need to believe that.
 
@@ -69,7 +69,7 @@ battles one is supposed to fight. The moment I get down the carousel to put orde
 in my thoughts and frame things into perspective, it appears painfully clear how
 insignificant and lousy all of this is: fighting for what? Fighting for who?
 Fighting to get where? And even if you get there, what does that change?
-The only convincing answer I seem to have found so far is: nothing. 
+The only convincing answer I seem to have found so far is: nothing.  
 And I know I shouldn't, but I can't help myself but think how much I wasted
 my life so far; all the things I haven't done, all the moments I forcibly
 prevented myself to experience, all the crazy things I avoided because "that's
