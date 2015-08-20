@@ -10,6 +10,8 @@ I don't know if it means something, but I find quite significant that I get back
 to this blog again today. I like to think I'm starting from where I stopped.
 
 <!-- More -->
+{% img https://farm1.staticflickr.com/567/20732780472_c73497060d_o.jpg %}
+
 Today I finally did it. It took me one year, but I found the chance, the time, the
 courage - all at once - to come see you. I didn't even know where you were, but
 something was telling me I would have found you. It didn't take long.
